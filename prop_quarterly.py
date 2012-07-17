@@ -57,95 +57,59 @@ pp.savefig('DropoutThermistorTemps.png')
 
 LTTplot('pcm01t', ylim=[50,170], limit_lines=False, yellow=[85,145], 
         red=[80,160])
-LTTplot('pcm02t', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[50,170], limit_lines=False, yellow=[85,145], red=[80,160])
-LTTplot('pcm03t', filter=['2000:049:00:00:00 2000:050:00:00:00'],
-        ylim=[50,170], limit_lines=False, yellow=[65,145], red=[60,160])
-LTTplot('pcm04t', filter=['2003:033:00:00:00 2003:034:00:00:00'],
-        ylim=[50,170], limit_lines=False, yellow=[65,145], red=[60,160])
-LTTplot('pfdm101t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pfdm102t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pfdm201t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pfdm202t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pffp01t', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[30,250], limit_lines=False, yellow=[47,200],red=[40,240])
-LTTplot('pftank1t', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[30,130], limit_lines=False, yellow=[47,100], red=[40,120])
-LTTplot('pftank2t', filter=['2000:049:00:00:00 2000:050:00:00:00'],
-        ylim=[30,130], limit_lines=False, yellow=[47,100], red=[40,120])
-LTTplot('pftankip', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pftankop', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('phetankp', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2000:264:00:00:00 2000:265:00:00:00'])
-LTTplot('phetankt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-20,150], limit_lines=False, yellow=[0,130], red=[-10,140])
-LTTplot('phofp1t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                           '2001:005:00:00:00 2001:006:00:00:00'])
-LTTplot('plaed1at', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-         ylim=[-90,300])
-LTTplot('plaed1bt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
+LTTplot('pcm02t', ylim=[50,170], limit_lines=False, yellow=[85,145], red=[80,160])
+LTTplot('pcm03t', ylim=[50,170], limit_lines=False, yellow=[65,145], red=[60,160])
+LTTplot('pcm04t', ylim=[50,170], limit_lines=False, yellow=[65,145], red=[60,160])
+LTTplot('pfdm101t')
+LTTplot('pfdm102t')
+LTTplot('pfdm201t')
+LTTplot('pfdm202t')
+LTTplot('pffp01t', ylim=[30,250], limit_lines=False, yellow=[47,200],red=[40,240])
+LTTplot('pftank1t', ylim=[30,130], limit_lines=False, yellow=[47,100], red=[40,120])
+LTTplot('pftank2t', ylim=[30,130], limit_lines=False, yellow=[47,100], red=[40,120])
+LTTplot('pftankip')
+LTTplot('pftankop')
+LTTplot('phetankp')
+LTTplot('phetankt', ylim=[-20,150], limit_lines=False, yellow=[0,130], red=[-10,140])
+LTTplot('phofp1t')
+LTTplot('plaed1at', ylim=[-90,300])
+LTTplot('plaed1bt', ylim=[-90,300])
+LTTplot('plaed1ct', ylim=[-90,300])
+LTTplot('plaed1dt', ylim=[-90,300])
+LTTplot('plaed1et')
+LTTplot('plaed1ft', ylim=[-90,300])
+LTTplot('plaed1gt', ylim=[-90,300])
+LTTplot('plaed1ht', ylim=[-90,300])
+LTTplot('plaed1it')
+LTTplot('plaed2at', 
         ylim=[-90,300])
-LTTplot('plaed1ct', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed1dt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed1et', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed1ft', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed1gt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed1ht', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed1it', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed2at', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed2bt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed2ct', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed2dt', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed2et', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed2ft', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed2gt', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed2ht', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed2it', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,300])
-LTTplot('plaed3at', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed3bt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed3ct', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed3dt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed3et', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed3ft', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed3gt', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2011:299:00:00:00 2011:300:00:00:00'], 
-                            ylim=[-90,100])
-LTTplot('plaed3ht', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed3it', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4at', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4bt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4ct', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('plaed4dt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4et', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4ft', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4gt', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4ht', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaed4it', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[-90,100])
-LTTplot('plaev1at', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[30,250], limit_lines=False, yellow=[47,225], 
+LTTplot('plaed2bt', ylim=[-90,300])
+LTTplot('plaed2ct')
+LTTplot('plaed2dt')
+LTTplot('plaed2et', ylim=[-90,300])
+LTTplot('plaed2ft')
+LTTplot('plaed2gt')
+LTTplot('plaed2ht', ylim=[-90,300])
+LTTplot('plaed2it', ylim=[-90,300])
+LTTplot('plaed3at', ylim=[-90,100])
+LTTplot('plaed3bt', ylim=[-90,100])
+LTTplot('plaed3ct', ylim=[-90,100])
+LTTplot('plaed3dt', ylim=[-90,100])
+LTTplot('plaed3et')
+LTTplot('plaed3ft')
+LTTplot('plaed3gt', ylim=[-90,100])
+LTTplot('plaed3ht')
+LTTplot('plaed3it', ylim=[-90,100])
+LTTplot('plaed4at', ylim=[-90,100])
+LTTplot('plaed4bt', ylim=[-90,100])
+LTTplot('plaed4ct')
+LTTplot('plaed4dt', ylim=[-90,100])
+LTTplot('plaed4et', ylim=[-90,100])
+LTTplot('plaed4ft', ylim=[-90,100])
+LTTplot('plaed4gt', ylim=[-90,100])
+LTTplot('plaed4ht', ylim=[-90,100])
+LTTplot('plaed4it', ylim=[-90,100])
+LTTplot('plaev1at', ylim=[30,250], limit_lines=False, yellow=[47,225], 
         red=[40,240])
 LTTplot('plaev1bt', ylim=[30,250], limit_lines=False, yellow=[47,225], 
         red=[40,240])
@@ -164,70 +128,46 @@ LTTplot('plaev4bt', ylim=[30,250], limit_lines=False, yellow=[47,225],
 LTTplot('pline01t')
 LTTplot('pline02t', ylim=[30,190], limit_lines=False, yellow=[47,170], 
         red=[40,180])
-LTTplot('pline03t', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[29.5,190], limit_lines=False, yellow=[42.5,170], red=[39.5,180])
-LTTplot('pline04t', filter=['2000:049:00:00:00 2000:050:00:00:00'],
-        ylim=[29.5,190], limit_lines=False, yellow=[42.5,170], red=[39.5,180])
-LTTplot('pline05t', ylim=[30,250], filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        limit_lines=False, yellow=[47,200], red=[40,240])
-LTTplot('pline06t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline07t', ylim=[30,250], filter=['2000:049:00:00:00 2000:050:00:00:00'],
-        limit_lines=False, yellow=[47,200], red=[40,240])
-LTTplot('pline08t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline09t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline10t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2003:127:00:00:00 2003:128:00:00:00'])
-LTTplot('pline11t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline12t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline13t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline14t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline15t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pline16t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2000:318:00:00:00 2000:319:00:00:00'])
-LTTplot('pm1thv1t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pm1thv2t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pm2thv1t', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[30,250], limit_lines=False, yellow=[47,195], red=[40,240])
-LTTplot('pm2thv2t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pm3thv1t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pm3thv2t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pm4thv1t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pm4thv2t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pmfp01t', filter=['2000:049:00:00:00 2000:050:00:00:00'], 
-        ylim=[30,150], limit_lines=False, yellow=[47,130], red=[40,140])
-LTTplot('pmtank1t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pmtank2t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pmtank3t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pmtankp', filter=['2000:049:00:00:00 2000:050:00:00:00'])
-LTTplot('pr1tv01t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2000:327:00:00:00 2000:328:00:00:00',
-                            '2003:121:00:00:00 2003:122:00:00:00', 
-                            '2004:200:00:00:00 2004:201:00:00:00'])
-LTTplot('pr1tv02t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2000:327:00:00:00 2000:328:00:00:00',
-                            '2004:200:00:00:00 2004:201:00:00:00'])
-LTTplot('pr2tv01t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2000:327:00:00:00 2000:328:00:00:00',
-                            '2004:200:00:00:00 2004:201:00:00:00'])
-LTTplot('pr2tv02t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2000:327:00:00:00 2000:328:00:00:00',
-                            '2004:200:00:00:00 2004:201:00:00:00'])
-LTTplot('pr3tv01t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2001:274:00:00:00 2001:275:00:00:00',
-                            '2002:100:00:00:00 2002:101:00:00:00',
-                            '2004:200:00:00:00 2004:201:00:00:00'])
-LTTplot('pr3tv02t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2004:200:00:00:00 2004:201:00:00:00'])
-LTTplot('pr4tv01t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2004:200:00:00:00 2004:201:00:00:00'])
-LTTplot('pr4tv02t', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2004:200:00:00:00 2004:201:00:00:00'])
+LTTplot('pline03t', ylim=[29.5,190], limit_lines=False, yellow=[42.5,170], red=[39.5,180])
+LTTplot('pline04t', ylim=[29.5,190], limit_lines=False, yellow=[42.5,170], red=[39.5,180])
+LTTplot('pline05t', ylim=[30,250], limit_lines=False, yellow=[47,200], red=[40,240])
+LTTplot('pline06t')
+LTTplot('pline07t', ylim=[30,250], limit_lines=False, yellow=[47,200], red=[40,240])
+LTTplot('pline08t')
+LTTplot('pline09t')
+LTTplot('pline10t')
+LTTplot('pline11t')
+LTTplot('pline12t')
+LTTplot('pline13t')
+LTTplot('pline14t')
+LTTplot('pline15t')
+LTTplot('pline16t')
+LTTplot('pm1thv1t')
+LTTplot('pm1thv2t')
+LTTplot('pm2thv1t', ylim=[30,250], limit_lines=False, yellow=[47,195], red=[40,240])
+LTTplot('pm2thv2t')
+LTTplot('pm3thv1t')
+LTTplot('pm3thv2t')
+LTTplot('pm4thv1t')
+LTTplot('pm4thv2t')
+LTTplot('pmfp01t', ylim=[30,150], limit_lines=False, yellow=[47,130], red=[40,140])
+LTTplot('pmtank1t')
+LTTplot('pmtank2t')
+LTTplot('pmtank3t')
+LTTplot('pmtankp')
+LTTplot('pr1tv01t')
+LTTplot('pr1tv02t')
+LTTplot('pr2tv01t')
+LTTplot('pr2tv02t')
+LTTplot('pr3tv01t')
+LTTplot('pr3tv02t')
+LTTplot('pr4tv01t')
+LTTplot('pr4tv02t')
 LTTplot('pxdm01t')
 LTTplot('pxdm02t')
-LTTplot('pxtank1t', filter=['2000:049:00:00:00 2000:050:00:00:00'])
+LTTplot('pxtank1t')
 LTTplot('pxtank2t')
-LTTplot('pxtankip', filter=['2000:049:00:00:00 2000:050:00:00:00',
-                            '2003:108:00:00:00 2003:109:00:00:00'])
+LTTplot('pxtankip')
 LTTplot('pxtankop')
 
 ##-------------------------------------------------------------

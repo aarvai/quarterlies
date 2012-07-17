@@ -9,28 +9,28 @@ import filter_times as bad
 ##-------------------------------------------------------------
 # Inputs
 
-t_start = '2012:032:00:00:00'
-t_stop = '2012:150:00:00:00'
+start = '2012:032:00:00:00'
+stop = '2012:150:00:00:00'
 
 ##-------------------------------------------------------------
 # Run Quarterlies
 
 pp.close('all')
 
-t = Time.DateTime()
-new_dir = t.date[:4] + '_' + t.date[5:8] + '_RUN'
-mkdir(new_dir)
+#t = Time.DateTime()
+#new_dir = t.date[:4] + '_' + t.date[5:8] + '_RUN'
+#mkdir(new_dir)
 
-chdir(new_dir)
-mkdir('pcad_' + t.date[:4] + '_' + t.date[5:8])
-chdir('pcad_' + t.date[:4] + '_' + t.date[5:8])
+#chdir(new_dir)
+#mkdir('pcad_' + t.date[:4] + '_' + t.date[5:8])
+#chdir('pcad_' + t.date[:4] + '_' + t.date[5:8])
 #execfile('pcad_quarterly.py')
-chdir('..')
+#chdir('..')
 
-mkdir('prop_' + t.date[:4] + '_' + t.date[5:8])
-chdir('prop_' + t.date[:4] + '_' + t.date[5:8])
+#mkdir('prop_' + t.date[:4] + '_' + t.date[5:8])
+#chdir('prop_' + t.date[:4] + '_' + t.date[5:8])
 #execfile('prop_quarterly.py')
-chdir('..')
+#chdir('..')
 
 ##-------------------------------------------------------------
 # LTTplot function
@@ -42,34 +42,56 @@ def LTTplot(var, **kwargs):
     :var:  MSID or derived parameter name (string)
     
     Optional inputs:
-    :save:         Save to a .png with MSID's name (default is False)
+    :savefig:      Save to a .png with MSID's name (default is True)
+    :start:        Start time (default is 2000:001)
+    :stop:         Stop time (default is None)
+    :stat:         Statistic type ('5min' or 'daily', default is 'daily')
     :limit_lines:  Plot database yellow caution and red warning limits 
                    (default is True)
     :yellow:       User-defined yellow caution limit lines (default is none)
     :red:          User-defined red warning limit lines  (default is none) 
     :ylim:         User-define  y-limits (default is none)
-    :filter:       Start and End times to filter out due to bad data
-    
+    :filter:       Start and End times to filter out due to bad data.  If
+                   none are supplied, it will default to any listed in
+                   filter_times.py.
+    :subplot:      Subplot information in list form.  If not supplied, a new
+                   figure will be created.
+    :cust_unit:    Custom unit, typically for use with custom_mult (default 
+                   is none)
+    :custom_mult:  Custom multiplier, typically for use with custom unit 
+                   (default is none)
     e.g.
     LTTplot('Dist_SatEarth')
-    LTTplot('pline05t', ylim=[30,170], save=True) 
+    LTTplot('pline05t', ylim=[30,170], savefig=False) 
     LTTplot('pr1tv01t', limit_lines=False, yellow=150, red=240)
     LTTplot('pr2tv01t', limit_lines=False, yellow=[40,150], red=[37,240])
     LTTplot('plaed3gt', filter=['2011:299:00:00:00 2011:300:00:00:00'])
+    LTTplot('pcm01t', subplot=[2,1,1], savefig=False) 
     """
     import filter_times as bad_times
     
-    data = fetch.Msid(var,'2000:001',stat='daily')
+    var = var.lower()
+    start = kwargs.pop('start', '2000:001')
+    stop = kwargs.pop('stop', None)
+    stat = kwargs.pop('stat', 'daily')
+    data = fetch.Msid(var, start, stop, stat=stat)
     GRAY = '#999999'
     if kwargs.has_key('filter'):
         data.filter_bad_times(table=kwargs.pop('filter'))
-    elseif hasattrib(bad_times, var):
+    elif hasattr(bad_times, var):
         data.filter_bad_times(table=getattr(bad_times, var))
-    pp.figure()
-    plot_cxctime(data.times, data.mins, color=GRAY, label='daily min')
-    plot_cxctime(data.times, data.maxes, 'k', label='daily max')
-    plot_cxctime(data.times, data.means, 'g', label='daily mean')
+    if kwargs.has_key('subplot'):
+        sp = kwargs.pop('subplot')
+        pp.subplot(sp[0],sp[1],sp[2])
+    else:  
+        pp.figure()
+    mult = kwargs.pop('cust_mult', 1)    
     lim = kwargs.pop('limit_lines', True)
+    if mult!=1:
+        lim=False
+    plot_cxctime(data.times, data.mins * mult, color=GRAY, label='min')
+    plot_cxctime(data.times, data.maxes * mult, 'k', label='max')
+    plot_cxctime(data.times, data.means * mult, 'g', label='mean')
     if hasattr(data, 'tdb'):
         pp.title(data.msid.upper() + ':  ' + data.tdb.technical_name)
         if lim == True:
@@ -84,8 +106,11 @@ def LTTplot(var, **kwargs):
             if ~kwargs.has_key('ylim'):
                 pp.ylim(np.array([data.tdb.Tlmt[4]-10.0, 
                                   data.tdb.Tlmt[5]+10.0]))
-    else: pp.title(data.msid)
-    pp.ylabel(data.unit)
+    else: pp.title(data.msid.upper())
+    if kwargs.has_key('cust_unit'):
+        pp.ylabel(kwargs.pop('cust_unit'))
+    else:
+        pp.ylabel(data.unit)
     pp.grid()
     if kwargs.has_key('ylim'):
         pp.ylim(kwargs.pop('ylim'))
@@ -97,7 +122,8 @@ def LTTplot(var, **kwargs):
         r = np.array([kwargs.pop('red')])
         for i in range(len(r)):
             pp.plot(pp.xlim(), np.array([r[i], r[i]]), 'r')        
-    s = kwargs.pop('save', True)
+    s = kwargs.pop('savefig', True)
     if s == True:
         pp.savefig(data.msid.lower() + '.png')
+        pp.close()
 
