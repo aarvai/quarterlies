@@ -3,7 +3,7 @@ from Ska.Matplotlib import plot_cxctime
 import numpy as np
 from Chandra import Time
 from matplotlib import pyplot as pp
-from os import chdir, mkdir
+from os import chdir, mkdir, path
 import filter_times as bad
 
 ##-------------------------------------------------------------
@@ -17,20 +17,26 @@ stop = '2012:150:00:00:00'
 
 pp.close('all')
 
-#t = Time.DateTime()
-#new_dir = t.date[:4] + '_' + t.date[5:8] + '_RUN'
-#mkdir(new_dir)
+t = Time.DateTime()
+new_dir = t.date[:4] + '_' + t.date[5:8] + '_RUN'
+pcad_dir = 'pcad_' + t.date[:4] + '_' + t.date[5:8]
+prop_dir = 'prop_' + t.date[:4] + '_' + t.date[5:8]
 
-#chdir(new_dir)
-#mkdir('pcad_' + t.date[:4] + '_' + t.date[5:8])
-#chdir('pcad_' + t.date[:4] + '_' + t.date[5:8])
-#execfile('pcad_quarterly.py')
-#chdir('..')
+if ~path.exists(new_dir):
+    mkdir(new_dir)
 
-#mkdir('prop_' + t.date[:4] + '_' + t.date[5:8])
-#chdir('prop_' + t.date[:4] + '_' + t.date[5:8])
-#execfile('prop_quarterly.py')
-#chdir('..')
+chdir(new_dir)
+if ~path.exists(pcad_dir):
+    mkdir(pcad_dir)
+chdir(pcad_dir)
+execfile('pcad_quarterly.py')
+chdir('..')
+
+if ~path.exists(prop_dir):
+    mkdir(prop_dir)
+    chdir(prop_dir)
+execfile('prop_quarterly.py')
+chdir('..')
 
 ##-------------------------------------------------------------
 # LTTplot function
@@ -79,7 +85,7 @@ def LTTplot(var, **kwargs):
     if kwargs.has_key('filter'):
         data.filter_bad_times(table=kwargs.pop('filter'))
     elif hasattr(bad_times, var):
-        data.filter_bad_times(table=getattr(bad_times, var))
+        data.filter_bad_times(table=getattr(bad_times, 'bad_' + var))
     if kwargs.has_key('subplot'):
         sp = kwargs.pop('subplot')
         pp.subplot(sp[0],sp[1],sp[2])
