@@ -15,7 +15,7 @@ stop = '2012:150:00:00:00'
 ##-------------------------------------------------------------
 # LTTplot function
 
-def LTTplot(var, **kwargs): 
+def LTTplot_test(var, **kwargs): 
     """Plot the daily min, max, and mean of a parameter, filtering for known
     bad data as listed in filter_times.py.
     
@@ -42,6 +42,7 @@ def LTTplot(var, **kwargs):
                    with custom_mult or derived parameters (default is none)
     :custom_mult:  Custom multiplier, typically for use with custom unit 
                    (default is none)   
+    :plot_stds:    Plot standard deviations (default is True)
     :plot_mins:    Plot minimum values (default is True)
     :plot_means:   Plot mean values (default is True)
     :plot_maxes:   Plot maximum values (default is True)
@@ -54,25 +55,49 @@ def LTTplot(var, **kwargs):
     LTTplot('pr2tv01t', limit_lines=False, yellow=[40,150], red=[37,240])
     LTTplot('plaed3gt', filter=['2011:299:00:00:00 2011:300:00:00:00'])
     LTTplot('pcm01t', subplot=[2,1,1], savefig=False) 
-    LTTplot('dp_css1_npm_sun', plot_means=False, plot_maxes=False, legend=True)
+    LTTplot('aogbias1', cust_unit='ARCSEC/SEC', cust_mult=3600*180/pi, subplot=311)
+    LTTplot('dp_css1_npm_sun', plot_means=False, plot_maxes=False, plot_stds=False, 
+            legend=True)
     """
-       
+    GRAY = '#999999'
     var = var.lower()
     start = kwargs.pop('start', '2000:001')
     stop = kwargs.pop('stop', None)
     stat = kwargs.pop('stat', 'daily')
+    
+    # Collect data and filter for bad points
     data = fetch.Msid(var, start, stop, stat=stat)
-    GRAY = '#999999'
     data.filter_bad_times(table=getattr(bad, 'bad_all'))
     if kwargs.has_key('filter'):
         data.filter_bad_times(table=kwargs.pop('filter'))
     elif hasattr(bad, 'bad_' + var):
         data.filter_bad_times(table=getattr(bad, 'bad_' + var))
-    if kwargs.has_key('subplot'):
-        sp = kwargs.get('subplot')
-        pp.subplot(sp[0],sp[1],sp[2])
+    
+    # Define subplots and figure size
+    # Figure size will vary depending on the number of subplots.
+    # If plotting standard deviations, ax1 will only be used to reference default
+    # axes size.  ax1 will be deleted and data will be plotted on ax2.
+    sub = kwargs.pop('subplot', 111)
+    if isscalar(sub):
+        sub = [int(str(sub)[0]), int(str(sub)[1]), int(str(sub)[2])]
+    print sub
+    if sub[0] == 1:  
+        fig_height = 6
+    elif sub[0] == 2:  
+        fig_height = 9
     else:  
-        pp.figure()
+        fig_height = 12
+        
+    figure(figsize=(8, fig_height))
+    ax1 = pp.subplot(sub[0], sub[1], sub[2])
+    if kwargs.get('plot_stds', True):
+        ax_pos = ax1.get_position().get_points()
+        ax_width = ax_pos[1,0] - ax_pos[0,0]
+        ax_height = ax_pos[1,1] - ax_pos[0,1]
+        pp.delaxes(ax1)
+        ax2 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .15 * ax_height, ax_width, .85 * ax_height])        
+    
+    # Plot data
     mult = kwargs.pop('cust_mult', 1)    
     lim = kwargs.pop('limit_lines', True)
     if mult!=1:
@@ -86,6 +111,7 @@ def LTTplot(var, **kwargs):
     if hasattr(data, 'tdb'):
         pp.title(data.msid.upper() + ':  ' + data.tdb.technical_name)
         if lim == True:
+            # Check if single limit set exists in TDB
             if size(data.tdb.Tlmt) == 1 and data.tdb.Tlmt is not None:
                 pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[4], 
                                              data.tdb.Tlmt[4]]), 'r')
@@ -99,11 +125,16 @@ def LTTplot(var, **kwargs):
                     pp.ylim(np.array([data.tdb.Tlmt[4]-10.0, 
                                       data.tdb.Tlmt[5]+10.0]))
     else: pp.title(data.msid.upper())
+    
+    # Account for custom y-labels
     if kwargs.has_key('cust_unit'):
         pp.ylabel(kwargs.pop('cust_unit'))
     else:
         pp.ylabel(data.unit)
+    
     pp.grid()
+    
+    # Plot custom limit lines
     if kwargs.has_key('ylim'):
         pp.ylim(kwargs.pop('ylim'))
     if kwargs.has_key('yellow'):
@@ -114,14 +145,25 @@ def LTTplot(var, **kwargs):
         r = np.array([kwargs.pop('red')])
         for i in range(len(r)):
             pp.plot(pp.xlim(), np.array([r[i], r[i]]), 'r')        
+    
+    # Add legend
     if kwargs.pop('legend', False):
         legend(loc='best')
-    tight_layout()
+    
+    # Plot standard deviations on ax3
+    if kwargs.get('plot_stds', True):
+        ax2.set_xticklabels([])
+        ax3 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .00 * ax_height, ax_width, .15 * ax_height])
+        ax3.set_yticklabels([])
+        plot_cxctime(data.times, data.stds * mult, color='k', label=(stat + ' stdev'))
+    
+    # Save and close figure
     s = kwargs.pop('savefig', True)
     if s == True:
         figname = kwargs.pop('saveas', data.msid.lower() + '.png')
         pp.savefig(figname)
-        # pp.close()
+        pp.close()
+
 
 ##-------------------------------------------------------------
 # Run Quarterlies
@@ -140,12 +182,12 @@ chdir(new_dir)
 if not path.exists(pcad_dir):
     mkdir(pcad_dir)
 chdir(pcad_dir)
-#execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
+execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
 chdir('..')
 
 if not path.exists(prop_dir):
     mkdir(prop_dir)
 chdir(prop_dir)
-# execfile('/home/aarvai/python/quarterlies/prop_quarterly.py')
+execfile('/home/aarvai/python/quarterlies/prop_quarterly.py')
 chdir('../..')
-# pp.close('all')
+pp.close('all')
