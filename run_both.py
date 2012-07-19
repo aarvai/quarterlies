@@ -95,7 +95,7 @@ def LTTplot(var, **kwargs):
     if isscalar(sub):
         sub = [int(str(sub)[0]), int(str(sub)[1]), int(str(sub)[2])]
     # Create a new figure unless using existing figure
-    if kwargs.pop('samefig', False):
+    if not kwargs.pop('samefig', False):
         if kwargs.has_key('fig_height'):
             fig_height = kwargs.pop('fig_height')
         elif sub[0] == 1:  
@@ -105,7 +105,7 @@ def LTTplot(var, **kwargs):
         else:  
             fig_height = 12
         fig_width = kwargs.pop('fig_width', 8)
-        figure(figsize=(fig_width, fig_height)
+        pp.figure(figsize=(fig_width, fig_height))
     ax1 = pp.subplot(sub[0], sub[1], sub[2])
     if kwargs.get('plot_stds', True):
         ax_pos = ax1.get_position().get_points()
@@ -205,7 +205,7 @@ chdir(new_dir)
 if not path.exists(pcad_dir):
     mkdir(pcad_dir)
 chdir(pcad_dir)
-execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
+#execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
 chdir('..')
 
 if not path.exists(prop_dir):
