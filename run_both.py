@@ -16,8 +16,8 @@ stop = '2012:150:00:00:00'
 # LTTplot function
 
 def LTTplot(var, **kwargs): 
-    """Plot the daily min, max, and mean of a parameter from 2000:001 through 
-    current
+    """Plot the daily min, max, and mean of a parameter, filtering for known
+    bad data as listed in filter_times.py.
     
     :var:  MSID or derived parameter name (string)
     
@@ -31,16 +31,22 @@ def LTTplot(var, **kwargs):
                    (default is True)
     :yellow:       User-defined yellow caution limit lines (default is none)
     :red:          User-defined red warning limit lines  (default is none) 
-    :ylim:         User-define  y-limits (default is none)
-    :filter:       Start and End times to filter out due to bad data.  If
-                   none are supplied, it will default to any listed in
-                   filter_times.py.
+    :ylim:         User-defined  y-limits (default is none)
+    :filter:       User-defined Start and End times to filter out due to bad 
+                   data.  If none are supplied, it will default to any listed 
+                   in filter_times.py.  In addition, LTTplot will always filter
+                   known NSM and SSM events as listed in filter_times.py (bad_all).
     :subplot:      Subplot information in list form.  If not supplied, a new
                    figure will be created.
-    :cust_unit:    Custom unit, typically for use with custom_mult (default 
-                   is none)
+    :cust_unit:    Custom unit to be displayed on y-axis label, typically for use 
+                   with custom_mult or derived parameters (default is none)
     :custom_mult:  Custom multiplier, typically for use with custom unit 
-                   (default is none)                 
+                   (default is none)   
+    :plot_mins:    Plot minimum values (default is True)
+    :plot_means:   Plot mean values (default is True)
+    :plot_maxes:   Plot maximum values (default is True)
+    :legend:       Display legend (default is False)
+    
     e.g.
     LTTplot('Dist_SatEarth')
     LTTplot('pline05t', ylim=[30,170], savefig=False) 
@@ -48,6 +54,7 @@ def LTTplot(var, **kwargs):
     LTTplot('pr2tv01t', limit_lines=False, yellow=[40,150], red=[37,240])
     LTTplot('plaed3gt', filter=['2011:299:00:00:00 2011:300:00:00:00'])
     LTTplot('pcm01t', subplot=[2,1,1], savefig=False) 
+    LTTplot('dp_css1_npm_sun', plot_means=False, plot_maxes=False, legend=True)
     """
        
     var = var.lower()
@@ -56,6 +63,7 @@ def LTTplot(var, **kwargs):
     stat = kwargs.pop('stat', 'daily')
     data = fetch.Msid(var, start, stop, stat=stat)
     GRAY = '#999999'
+    data.filter_bad_times(table=getattr(bad, 'bad_all'))
     if kwargs.has_key('filter'):
         data.filter_bad_times(table=kwargs.pop('filter'))
     elif hasattr(bad, 'bad_' + var):
@@ -69,9 +77,12 @@ def LTTplot(var, **kwargs):
     lim = kwargs.pop('limit_lines', True)
     if mult!=1:
         lim=False
-    plot_cxctime(data.times, data.mins * mult, color=GRAY, label='min')
-    plot_cxctime(data.times, data.maxes * mult, 'k', label='max')
-    plot_cxctime(data.times, data.means * mult, 'g', label='mean')
+    if kwargs.pop('plot_maxes', True):
+        plot_cxctime(data.times, data.maxes * mult, 'k', label=(stat + ' maxes'))
+    if kwargs.pop('plot_means', True):
+        plot_cxctime(data.times, data.means * mult, 'g', label=(stat + ' means'))
+    if kwargs.pop('plot_mins', True):
+        plot_cxctime(data.times, data.mins * mult, color=GRAY, label=(stat + ' min'))
     if hasattr(data, 'tdb'):
         pp.title(data.msid.upper() + ':  ' + data.tdb.technical_name)
         if lim == True:
@@ -103,11 +114,14 @@ def LTTplot(var, **kwargs):
         r = np.array([kwargs.pop('red')])
         for i in range(len(r)):
             pp.plot(pp.xlim(), np.array([r[i], r[i]]), 'r')        
+    if kwargs.pop('legend', False):
+        legend(loc='best')
+    tight_layout()
     s = kwargs.pop('savefig', True)
     if s == True:
         figname = kwargs.pop('saveas', data.msid.lower() + '.png')
         pp.savefig(figname)
-        pp.close()
+        # pp.close()
 
 ##-------------------------------------------------------------
 # Run Quarterlies
@@ -126,7 +140,7 @@ chdir(new_dir)
 if not path.exists(pcad_dir):
     mkdir(pcad_dir)
 chdir(pcad_dir)
-# execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
+#execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
 chdir('..')
 
 if not path.exists(prop_dir):
@@ -134,4 +148,4 @@ if not path.exists(prop_dir):
 chdir(prop_dir)
 # execfile('/home/aarvai/python/quarterlies/prop_quarterly.py')
 chdir('../..')
-pp.close('all')
+# pp.close('all')
