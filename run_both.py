@@ -72,7 +72,6 @@ def LTTplot(var, **kwargs):
     LTTplot('dp_css1_npm_sun', plot_means=False, plot_maxes=False, 
              plot_stds=False, legend=True)
     """
-    GRAY = '#999999'
     var = var.lower()
     start = kwargs.pop('start', '2000:001')
     stop = kwargs.pop('stop', None)
@@ -101,7 +100,7 @@ def LTTplot(var, **kwargs):
         elif sub[0] == 1:  
             fig_height = 6
         elif sub[0] == 2:  
-            fig_height = 9
+            fig_height = 6
         else:  
             fig_height = 12
         fig_width = kwargs.pop('fig_width', 8)
@@ -112,18 +111,18 @@ def LTTplot(var, **kwargs):
         ax_width = ax_pos[1,0] - ax_pos[0,0]
         ax_height = ax_pos[1,1] - ax_pos[0,1]
         pp.delaxes(ax1)
-        ax2 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .15 * ax_height, ax_width, .85 * ax_height])        
+        ax2 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .20 * ax_height, ax_width, .80 * ax_height])  
     
     # Plot data
     mult = kwargs.pop('cust_mult', 1)    
     lim = kwargs.pop('limit_lines', True)
     if kwargs.pop('plot_maxes', True):
-        plot_cxctime(data.times, data.maxes * mult, 'k', label=(stat + ' maxes'))
-    if kwargs.pop('plot_means', True):
-        plot_cxctime(data.times, data.means * mult, 'g', label=(stat + ' means'))
+        plot_cxctime(data.times, data.maxes * mult, 'g--', label=(stat + ' maxes'))
     if kwargs.pop('plot_mins', True):
-        plot_cxctime(data.times, data.mins * mult, color=GRAY, label=(stat + ' min'))
-    
+        plot_cxctime(data.times, data.mins * mult, 'b:', label=(stat + ' mins'))
+    if kwargs.pop('plot_means', True):
+        plot_cxctime(data.times, data.means * mult, 'k+-', label=(stat + ' means'))
+   
     # Plot limits
     if kwargs.pop('plot_limits', True):
         # Check if single limit set exists in TDB
@@ -144,7 +143,7 @@ def LTTplot(var, **kwargs):
     if kwargs.has_key('cust_title'):
         title = kwargs.pop('cust_title')
     elif hasattr(data, 'tdb'):
-        title = data.msid.upper() + ':  ' + data.tdb.technical_name
+        title = data.tdb.technical_name + ' - ' + data.msid.upper() 
     else:
         title=data.msid.upper()    
     pp.title(title)
@@ -176,7 +175,7 @@ def LTTplot(var, **kwargs):
     # Plot standard deviations on ax3
     if kwargs.get('plot_stds', True):
         ax2.set_xticklabels([])
-        ax3 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .00 * ax_height, ax_width, .15 * ax_height])
+        ax3 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .05 * ax_height, ax_width, .15 * ax_height])
         ax3.set_yticklabels([])
         plot_cxctime(data.times, data.stds * mult, color='k', label=(stat + ' stdev'))
     
@@ -185,7 +184,7 @@ def LTTplot(var, **kwargs):
     if s == True:
         figname = kwargs.pop('saveas', data.msid.lower() + '.png')
         pp.savefig(figname)
-        #pp.close()
+        # pp.close()
 
 
 ##-------------------------------------------------------------
@@ -205,7 +204,7 @@ chdir(new_dir)
 if not path.exists(pcad_dir):
     mkdir(pcad_dir)
 chdir(pcad_dir)
-#execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
+execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
 chdir('..')
 
 if not path.exists(prop_dir):
