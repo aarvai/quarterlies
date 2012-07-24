@@ -56,7 +56,7 @@ pp.savefig('DropoutThermistorTemps.png')
 
 ##-------------------------------------------------------------
 # Define Custom LTT Plots
-def prop_LTTs(start, stop):
+def prop_ltts(start, stop):
     plot_ltt('pcm01t', start=start, stop=stop, ylim=[50,170], plot_limits=False, yellow=[85,145], red=[80,160])
     plot_ltt('pcm02t', start=start, stop=stop, ylim=[50,170], plot_limits=False, yellow=[85,145], red=[80,160])
     plot_ltt('pcm03t', start=start, stop=stop, ylim=[50,170], plot_limits=False, yellow=[65,145], red=[60,160])

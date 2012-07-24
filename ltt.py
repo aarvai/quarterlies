@@ -1,3 +1,11 @@
+import numpy as np
+from matplotlib import pyplot as pp
+
+from Ska.engarchive import fetch_eng as fetch
+from Ska.Matplotlib import plot_cxctime
+
+import filter_times as bad
+
 ##-------------------------------------------------------------
 # Long term trending plotting function
 
@@ -58,7 +66,7 @@ def plot_ltt(var, **kwargs):
     LTTplot('dp_css1_npm_sun', plot_means=False, plot_maxes=False, 
              plot_stds=False, legend=True)
     """
-    var = var.upper()
+    var = var.lower()
     start = kwargs.pop('start', '2000:001')
     stop = kwargs.pop('stop', None)
     stat = kwargs.pop('stat', 'daily')

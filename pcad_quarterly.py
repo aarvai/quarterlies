@@ -1,41 +1,40 @@
-from Ska.engarchive import fetch_eng as fetch
-from Ska.Matplotlib import plot_cxctime
-from Chandra import Time
-from matplotlib import pyplot as pp
-import filter_times as bad_times
 from os import chdir, mkdir, path
+
+from Chandra import Time
+
+import pcad_plots as pcad
 
 ##-------------------------------------------------------------
 # Define Custom LTT Plots
 
-def pcad_LTTs(start, stop):
+def pcad_ltts(start, stop):
 
     # ACA --------------------------------------------
     #
-    plot_ltt('AACCCDPT', **plot_AACCCDPT)
-    plot_ltt('AFLCAAH', **plot_AFLCAAH)
+    plot_ltt('aacccdpt', **pcad.plot_aacccdpt)
+    plot_ltt('aflcaah', **pcad.plot_aflcaah)
 
     # Min CSS Counts in NPM, Sun ---------------------
-    plot_ltt('DP_CSS1_NPM_SUN', **plot_DP_CSS1_NPM_SUN)
-    plot_ltt('DP_CSS2_NPM_SUN', **plot_DP_CSS2_NPM_SUN)
-    plot_ltt('DP_CSS3_NPM_SUN', **plot_DP_CSS3_NPM_SUN)
-    plot_ltt('DP_CSS4_NPM_SUN', **plot_DP_CSS4_NPM_SUN)  
+    plot_ltt('dp_css1_npm_sun', **pcad.plot_dp_css1_npm_sun)
+    plot_ltt('dp_css2_npm_sun', **pcad.plot_dp_css2_npm_sun)
+    plot_ltt('dp_css3_npm_sun', **pcad.plot_dp_css3_npm_sun)
+    plot_ltt('dp_css4_npm_sun', **pcad.plot_dp_css4_npm_sun)  
     
     # FSS Angles -------------------------------------
     #
-    plot_ltt('DP_ROLL_FSS', **plot_DP_ROLL_FSS)          
-    plot_ltt('DP_PITCH_FSS', **plot_DP_PITCH_FSS)        
+    plot_ltt('dp_roll_fss', **pcad.plot_dp_roll_fss)          
+    plot_ltt('dp_pitch_fss', **pcad.plot_dp_pitch_fss)        
     #
-    plot_ltt('AOALPANG', **plot_AOALPANG)                
-    plot_ltt('AOBETANG', **plot_AOBETANG)                
+    plot_ltt('aoalpang', **pcad.plot_aoalpang)                
+    plot_ltt('aobetang', **pcad.plot_aobetang)                
 
     # FSS / CSS Sun Vector Difference ----------------
-    plot_ltt('DP_FSS_CSS_ANGLE_DIFF', **plot_DP_FSS_CSS_ANGLE_DIFF)            
+    plot_ltt('dp_fss_css_angle_diff', **pcad.plot_dp_fss_css_angle_diff)            
 
     # Solar Array Angles -----------------------------
     #
-    plot_ltt('AOSARES1', **plot_AOSARES1)               
-    plot_ltt('AOSARES2', **plot_AOSARES2)               
+    plot_ltt('aosares1', **pcad.plot_aosares1)               
+    plot_ltt('aosares2', **pcad.plot_aosares2)               
     
     # IRU-1 ------------------------------------------
     if Time.DateTime(start) < Time.DateTime('2003:200'):
@@ -44,14 +43,14 @@ def pcad_LTTs(start, stop):
         else:  
             stop_iru1 = stop
         #
-        plot_ltt('AIRU1G1I', **plot_AIRU1G1I)              
-        plot_ltt('AIRU1G2I', **plot_AIRU1G2I)              
+        plot_ltt('airu1g1i', **pcad.plot_airu1g1i)              
+        plot_ltt('airu1g2i', **pcad.plot_airu1g2i)              
         #
-        plot_ltt('AIRU1G1T', **plot_AIRU1G1T)              
-        plot_ltt('AIRU1G2T', **plot_AIRU1G2T)              
+        plot_ltt('airu1g1t', **pcad.plot_airu1g1t)              
+        plot_ltt('airu1g2t', **pcad.plot_airu1g2t)              
         #
-        plot_ltt('AIRU1BT', **plot_AIRU1BT)                
-        plot_ltt('AIRU1VFT', **plot_AIRU1VFT)              
+        plot_ltt('airu1bt', **pcad.plot_airu1bt)                
+        plot_ltt('airu1vft', **pcad.plot_airu1vft)              
 
     # IRU-2 ------------------------------------------
     if Time.DateTime(stop) > Time.DateTime('2003:201'):
@@ -60,105 +59,105 @@ def pcad_LTTs(start, stop):
         else:  
             start_iru1 = start
         #
-        plot_ltt('AIRU2G1I', **plot_AIRU2G1I)              
-        plot_ltt('AIRU2G2I', **plot_AIRU2G2I)              
+        plot_ltt('airu2g1i', **pcad.plot_airu2g1i)              
+        plot_ltt('airu2g2i', **pcad.plot_airu2g2i)              
         #
-        plot_ltt('AIRU2G1T', **plot_AIRU2G1T)              
-        plot_ltt('AIRU2G2T', **plot_AIRU2G2T)              
+        plot_ltt('airu2g1t', **pcad.plot_airu2g1t)              
+        plot_ltt('airu2g2t', **pcad.plot_airu2g2t)              
         #
-        plot_ltt('AIRU2BT', **plot_AIRU2BT)                
-        plot_ltt('AIRU2VFT', **plot_AIRU2VFT)              
+        plot_ltt('airu2bt', **pcad.plot_airu2bt)                
+        plot_ltt('airu2vft', **pcad.plot_airu2vft)              
 
     # IRU Biases -------------------------------------
     #
-    plot_ltt('AOGBIAS1', **plot_AOGBIAS1)                
-    plot_ltt('AOGBIAS2', **plot_AOGBIAS2)                
-    plot_ltt('AOGBIAS3', **plot_AOGBIAS3)                
+    plot_ltt('aogbias1', **pcad.plot_aogbias1)                
+    plot_ltt('aogbias2', **pcad.plot_aogbias2)                
+    plot_ltt('aogbias3', **pcad.plot_aogbias3)                
 
     # RW Speeds --------------------------------------
     #
-    plot_ltt('AORWSPD1', **plot_AORWSPD1)                
-    plot_ltt('AORWSPD2', **plot_AORWSPD2)                
-    plot_ltt('AORWSPD3', **plot_AORWSPD3)                
+    plot_ltt('aorwspd1', **pcad.plot_aorwspd1)                
+    plot_ltt('aorwspd2', **pcad.plot_aorwspd2)                
+    plot_ltt('aorwspd3', **pcad.plot_aorwspd3)                
     #
-    plot_ltt('AORWSPD4', **plot_AORWSPD4)                
-    plot_ltt('AORWSPD5', **plot_AORWSPD5)                
-    plot_ltt('AORWSPD6', **plot_AORWSPD6)                
+    plot_ltt('aorwspd4', **pcad.plot_aorwspd4)                
+    plot_ltt('aorwspd5', **pcad.plot_aorwspd5)                
+    plot_ltt('aorwspd6', **pcad.plot_aorwspd6)                
 
     # RW Compartment Temperatures ------------------------
-    plot_ltt('TCYZ_RW1', **plot_TCYZ_RW1)                
-    plot_ltt('TPCP_RW2', **plot_TPCP_RW2)                
-    plot_ltt('TPCP_RW3', **plot_TPCP_RW3)                
+    plot_ltt('tcyz_rw1', **pcad.plot_tcyz_rw1)                
+    plot_ltt('tpcp_rw2', **pcad.plot_tpcp_rw2)                
+    plot_ltt('tpcp_rw3', **pcad.plot_tpcp_rw3)                
     #
-    plot_ltt('TPCM_RW4', **plot_TPCM_RW4)                
-    plot_ltt('TPCM_RW5', **plot_TPCM_RW5)                
-    plot_ltt('TCYZ_RW6', **plot_TCYZ_RW6)                
+    plot_ltt('tpcm_rw4', **pcad.plot_tpcm_rw4)                
+    plot_ltt('tpcm_rw5', **pcad.plot_tpcm_rw5)                
+    plot_ltt('tcyz_rw6', **pcad.plot_tcyz_rw6)                
 
     # RW Bearing Temperatures ------------------------
-    plot_ltt('ARWA1BT', **plot_ARWA1BT)                 
-    plot_ltt('ARWA2BT', **plot_ARWA2BT)                 
-    plot_ltt('ARWA3BT', **plot_ARWA3BT)                 
+    plot_ltt('arwa1bt', **pcad.plot_arwa1bt)                 
+    plot_ltt('arwa2bt', **pcad.plot_arwa2bt)                 
+    plot_ltt('arwa3bt', **pcad.plot_arwa3bt)                 
     #
-    plot_ltt('ARWA4BT', **plot_ARWA4BT)                 
-    plot_ltt('ARWA5BT', **plot_ARWA5BT)                 
-    plot_ltt('ARWA6BT', **plot_ARWA6BT)                 
+    plot_ltt('arwa4bt', **pcad.plot_arwa4bt)                 
+    plot_ltt('arwa5bt', **pcad.plot_arwa5bt)                 
+    plot_ltt('arwa6bt', **pcad.plot_arwa6bt)                 
 
     # RW Delta (Compartment - Bearing) Temperatures ------
-    plot_ltt('DP_RW1_DELTA_TEMP', **plot_DP_RW1_DELTA_TEMP)
-    plot_ltt('DP_RW2_DELTA_TEMP', **plot_DP_RW2_DELTA_TEMP)
-    plot_ltt('DP_RW3_DELTA_TEMP', **plot_DP_RW3_DELTA_TEMP)
+    plot_ltt('dp_rw1_delta_temp', **pcad.plot_dp_rw1_delta_temp)
+    plot_ltt('dp_rw2_delta_temp', **pcad.plot_dp_rw2_delta_temp)
+    plot_ltt('dp_rw3_delta_temp', **pcad.plot_dp_rw3_delta_temp)
     #
-    plot_ltt('DP_RW4_DELTA_TEMP', **plot_DP_RW4_DELTA_TEMP)
-    plot_ltt('DP_RW5_DELTA_TEMP', **plot_DP_RW5_DELTA_TEMP)
-    plot_ltt('DP_RW6_DELTA_TEMP', **plot_DP_RW6_DELTA_TEMP)
+    plot_ltt('dp_rw4_delta_temp', **pcad.plot_dp_rw4_delta_temp)
+    plot_ltt('dp_rw5_delta_temp', **pcad.plot_dp_rw5_delta_temp)
+    plot_ltt('dp_rw6_delta_temp', **pcad.plot_dp_rw6_delta_temp)
 
     # RW Torque Currents -----------------------------
     #
-    plot_ltt('AWD1TQI', **plot_AWD1TQI)                 
-    plot_ltt('AWD2TQI', **plot_AWD2TQI)                 
-    plot_ltt('AWD3TQI', **plot_AWD3TQI)                 
+    plot_ltt('awd1tqi', **pcad.plot_awd1tqi)                 
+    plot_ltt('awd2tqi', **pcad.plot_awd2tqi)                 
+    plot_ltt('awd3tqi', **pcad.plot_awd3tqi)                 
     #
-    plot_ltt('AWD4TQI', **plot_AWD4TQI)                 
-    plot_ltt('AWD5TQI', **plot_AWD5TQI)                 
-    plot_ltt('AWD6TQI', **plot_AWD6TQI)                 
+    plot_ltt('awd4tqi', **pcad.plot_awd4tqi)                 
+    plot_ltt('awd5tqi', **pcad.plot_awd5tqi)                 
+    plot_ltt('awd6tqi', **pcad.plot_awd6tqi)                 
 
     # RW Drag Torque ---------------------------------
     #
-    plot_ltt('AORWCMD1', **plot_AORWCMD1)               
-    plot_ltt('AORWCMD2', **plot_AORWCMD2)               
-    plot_ltt('AORWCMD3', **plot_AORWCMD3)               
+    plot_ltt('aorwcmd1', **pcad.plot_aorwcmd1)               
+    plot_ltt('aorwcmd2', **pcad.plot_aorwcmd2)               
+    plot_ltt('aorwcmd3', **pcad.plot_aorwcmd3)               
     #
-    plot_ltt('AORWCMD4', **plot_AORWCMD4)               
-    plot_ltt('AORWCMD5', **plot_AORWCMD5)               
-    plot_ltt('AORWCMD6', **plot_AORWCMD6)               
+    plot_ltt('aorwcmd4', **pcad.plot_aorwcmd4)               
+    plot_ltt('aorwcmd5', **pcad.plot_aorwcmd5)               
+    plot_ltt('aorwcmd6', **pcad.plot_aorwcmd6)               
        
     # WDE Converter Voltages -------------------------
     #
-    plot_ltt('AWD1CV5V', **plot_AWD1CV5V)               
-    plot_ltt('AWD2CV5V', **plot_AWD2CV5V)               
-    plot_ltt('AWD3CV5V', **plot_AWD3CV5V)               
+    plot_ltt('awd1cv5v', **pcad.plot_awd1cv5v)               
+    plot_ltt('awd2cv5v', **pcad.plot_awd2cv5v)               
+    plot_ltt('awd3cv5v', **pcad.plot_awd3cv5v)               
     #
-    plot_ltt('AWD4CV5V', **plot_AWD4CV5V)               
-    plot_ltt('AWD5CV5V', **plot_AWD5CV5V)               
-    plot_ltt('AWD6CV5V', **plot_AWD6CV5V)               
+    plot_ltt('awd4cv5v', **pcad.plot_awd4cv5v)               
+    plot_ltt('awd5cv5v', **pcad.plot_awd5cv5v)               
+    plot_ltt('awd6cv5v', **pcad.plot_awd6cv5v)               
 
     # Other Converter Voltages -----------------------
     #
-    plot_ltt('ACPA5CV', **plot_ACPA5CV)           
-    plot_ltt('ADE1P5CV', **plot_ADE1P5CV)         
-    plot_ltt('AFSSPC1V', **plot_AFSSPC1V)         
+    plot_ltt('acpa5cv', **pcad.plot_acpa5cv)           
+    plot_ltt('ade1p5cv', **pcad.plot_ade1p5cv)         
+    plot_ltt('afsspc1v', **pcad.plot_afsspc1v)         
     #
-    plot_ltt('AGWS1V', **plot_AGWS1V)             
-    plot_ltt('AGWS2V', **plot_AGWS2V)             
-    plot_ltt('AIOAP5CV', **plot_AIOAP5CV)         
+    plot_ltt('agws1v', **pcad.plot_agws1v)             
+    plot_ltt('agws2v', **pcad.plot_agws2v)             
+    plot_ltt('aioap5cv', **pcad.plot_aioap5cv)         
     #
-    plot_ltt('ASPEA5CV', **plot_ASPEA5CV)               
-    plot_ltt('AVD1CV5V', **plot_AVD1CV5V)               
+    plot_ltt('aspea5cv', **pcad.plot_aspea5cv)               
+    plot_ltt('avd1cv5v', **pcad.plot_avd1cv5v)               
 
     # EPIC Register Mismatches & CPE Error Count ------
     #
-    plot_ltt('AOEPICER', **plot_AOEPICER)               
-    plot_ltt('AOCPESTC', **plot_AOCPESTC)               
+    plot_ltt('aoepicer', **pcad.plot_aoepicer)               
+    plot_ltt('aocpestc', **pcad.plot_aocpestc)               
 
    
 ##-----------------------------------------------------
