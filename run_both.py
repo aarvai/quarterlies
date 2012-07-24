@@ -1,11 +1,10 @@
-
-
-
-
-
 from os import chdir, mkdir, path
+from matplotlib import pyplot as pp
+
+from Chandra import Time
+
 from ltt import plot_ltt
-import filter_times as bad
+import pcad_plots as pcad
 
 ##-------------------------------------------------------------
 # Inputs
@@ -31,12 +30,12 @@ chdir(new_dir)
 if not path.exists(pcad_dir):
     mkdir(pcad_dir)
 chdir(pcad_dir)
-execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
+#execfile('/home/aarvai/python/quarterlies/pcad_quarterly.py')
 chdir('..')
 
 if not path.exists(prop_dir):
     mkdir(prop_dir)
 chdir(prop_dir)
-#execfile('/home/aarvai/python/quarterlies/prop_quarterly.py')
+execfile('/home/aarvai/python/quarterlies/prop_quarterly.py')
 chdir('../..')
-#pp.close('all')
+pp.close('all')
