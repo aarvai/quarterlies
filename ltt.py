@@ -73,7 +73,7 @@ def plot_ltt(var, **kwargs):
     
     # Collect data and filter for bad points
     data = fetch.Msid(var, start, stop, stat=stat)
-    data.filter_bad_times(table=getattr(bad, 'bad_ALL'))
+    data.filter_bad_times(table=getattr(bad, 'bad_all'))
     if kwargs.has_key('filter'):
         data.filter_bad_times(table=kwargs.pop('filter'))
     elif hasattr(bad, 'bad_' + var):
@@ -85,7 +85,7 @@ def plot_ltt(var, **kwargs):
     # axes size.  ax1 will be deleted and data will be plotted on ax2.
     sub = kwargs.pop('subplot', 111)
     # Convert subplot input to list form if provided by user as integer
-    if isscalar(sub):
+    if np.isscalar(sub):
         sub = [int(str(sub)[0]), int(str(sub)[1]), int(str(sub)[2])]
     # Create a new figure unless using existing figure
     if not kwargs.pop('samefig', False):
@@ -120,7 +120,7 @@ def plot_ltt(var, **kwargs):
     # Plot limits
     if kwargs.pop('plot_limits', True):
         # Check if single limit set exists in TDB
-        if hasattr(data, 'tdb') and size(data.tdb.Tlmt) == 1 and data.tdb.Tlmt is not None:
+        if hasattr(data, 'tdb') and np.size(data.tdb.Tlmt) == 1 and data.tdb.Tlmt is not None:
             pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[4] * mult, 
                                          data.tdb.Tlmt[4] * mult]), 'r')
             pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[2] * mult, 
@@ -178,4 +178,4 @@ def plot_ltt(var, **kwargs):
     if s == True:
         figname = kwargs.pop('saveas', data.msid.lower() + '.png')
         pp.savefig(figname)
-        # pp.close()
+        pp.close()
