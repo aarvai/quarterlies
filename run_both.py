@@ -72,14 +72,14 @@ def LTTplot(var, **kwargs):
     LTTplot('dp_css1_npm_sun', plot_means=False, plot_maxes=False, 
              plot_stds=False, legend=True)
     """
-    var = var.lower()
+    var = var.upper()
     start = kwargs.pop('start', '2000:001')
     stop = kwargs.pop('stop', None)
     stat = kwargs.pop('stat', 'daily')
     
     # Collect data and filter for bad points
     data = fetch.Msid(var, start, stop, stat=stat)
-    data.filter_bad_times(table=getattr(bad, 'bad_all'))
+    data.filter_bad_times(table=getattr(bad, 'bad_ALL'))
     if kwargs.has_key('filter'):
         data.filter_bad_times(table=kwargs.pop('filter'))
     elif hasattr(bad, 'bad_' + var):
