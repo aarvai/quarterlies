@@ -3,8 +3,11 @@ from matplotlib import pyplot as pp
 
 from Ska.engarchive import fetch_eng as fetch
 from Ska.Matplotlib import plot_cxctime
+from Chandra import Time
 
 import filter_times as bad
+import pcad_ltt_specs as pcad
+import prop_ltt_specs as prop
 
 ##-------------------------------------------------------------
 # Long term trending plotting function
@@ -179,3 +182,307 @@ def plot_ltt(var, **kwargs):
         figname = kwargs.pop('saveas', data.msid.lower() + '.png')
         pp.savefig(figname)
         pp.close()
+
+
+##-------------------------------------------------------------
+# Define PCAD Custom LTT Plots
+
+def pcad_ltts(start, stop):
+
+    # ACA --------------------------------------------
+    #
+    plot_ltt('aacccdpt', start=start, stop=stop, **pcad.plot_aacccdpt)
+    plot_ltt('aflcaah', start=start, stop=stop, **pcad.plot_aflcaah)
+
+    # Min CSS Counts in NPM, Sun ---------------------
+    plot_ltt('dp_css1_npm_sun', start=start, stop=stop, **pcad.plot_dp_css1_npm_sun)
+    plot_ltt('dp_css2_npm_sun', start=start, stop=stop, **pcad.plot_dp_css2_npm_sun)
+    plot_ltt('dp_css3_npm_sun', start=start, stop=stop, **pcad.plot_dp_css3_npm_sun)
+    plot_ltt('dp_css4_npm_sun', start=start, stop=stop, **pcad.plot_dp_css4_npm_sun)  
+    
+    # FSS Angles -------------------------------------
+    #
+    plot_ltt('dp_roll_fss', start=start, stop=stop, **pcad.plot_dp_roll_fss)          
+    plot_ltt('dp_pitch_fss', start=start, stop=stop, **pcad.plot_dp_pitch_fss)        
+    #
+    plot_ltt('aoalpang', start=start, stop=stop, **pcad.plot_aoalpang)                
+    plot_ltt('aobetang', start=start, stop=stop, **pcad.plot_aobetang)                
+
+    # FSS / CSS Sun Vector Difference ----------------
+    plot_ltt('dp_fss_css_angle_diff', start=start, stop=stop, **pcad.plot_dp_fss_css_angle_diff)            
+
+    # Solar Array Angles -----------------------------
+    #
+    plot_ltt('aosares1', start=start, stop=stop, **pcad.plot_aosares1)               
+    plot_ltt('aosares2', start=start, stop=stop, **pcad.plot_aosares2)               
+    
+    # IRU-1 ------------------------------------------
+    if Time.DateTime(start).secs < Time.DateTime('2003:200').secs:
+        if Time.DateTime(stop).secs > Time.DateTime('2003:200').secs:
+            stop_iru1 = '2003:199'
+        else:  
+            stop_iru1 = stop
+        #
+        plot_ltt('airu1g1i', start=start, stop=stop_iru1, **pcad.plot_airu1g1i)              
+        plot_ltt('airu1g2i', start=start, stop=stop_iru1, **pcad.plot_airu1g2i)              
+        #
+        plot_ltt('airu1g1t', start=start, stop=stop_iru1, **pcad.plot_airu1g1t)              
+        plot_ltt('airu1g2t', start=start, stop=stop_iru1, **pcad.plot_airu1g2t)              
+        #
+        plot_ltt('airu1bt', start=start, stop=stop_iru1, **pcad.plot_airu1bt)                
+        plot_ltt('airu1vft', start=start, stop=stop_iru1, **pcad.plot_airu1vft)              
+
+    # IRU-2 ------------------------------------------
+    if Time.DateTime(stop).secs > Time.DateTime('2003:201').secs:
+        if Time.DateTime(start).secs < Time.DateTime('2003:201').secs:
+            start_iru2 = '2003:201'
+        else:  
+            start_iru2 = start
+        #
+        plot_ltt('airu2g1i', start=start_iru2, stop=stop, **pcad.plot_airu2g1i)              
+        plot_ltt('airu2g2i', start=start_iru2, stop=stop, **pcad.plot_airu2g2i)              
+        #
+        plot_ltt('airu2g1t', start=start_iru2, stop=stop, **pcad.plot_airu2g1t)              
+        plot_ltt('airu2g2t', start=start_iru2, stop=stop, **pcad.plot_airu2g2t)              
+        #
+        plot_ltt('airu2bt', start=start_iru2, stop=stop, **pcad.plot_airu2bt)                
+        plot_ltt('airu2vft', start=start_iru2, stop=stop, **pcad.plot_airu2vft)              
+
+    # IRU Biases -------------------------------------
+    #
+    plot_ltt('aogbias1', start=start, stop=stop, **pcad.plot_aogbias1)                
+    plot_ltt('aogbias2', start=start, stop=stop, **pcad.plot_aogbias2)                
+    plot_ltt('aogbias3', start=start, stop=stop, **pcad.plot_aogbias3)                
+
+    # RW Speeds --------------------------------------
+    #
+    plot_ltt('aorwspd1', start=start, stop=stop, **pcad.plot_aorwspd1)                
+    plot_ltt('aorwspd2', start=start, stop=stop, **pcad.plot_aorwspd2)                
+    plot_ltt('aorwspd3', start=start, stop=stop, **pcad.plot_aorwspd3)                
+    #
+    plot_ltt('aorwspd4', start=start, stop=stop, **pcad.plot_aorwspd4)                
+    plot_ltt('aorwspd5', start=start, stop=stop, **pcad.plot_aorwspd5)                
+    plot_ltt('aorwspd6', start=start, stop=stop, **pcad.plot_aorwspd6)                
+
+    # RW Compartment Temperatures ------------------------
+    plot_ltt('tcyz_rw1', start=start, stop=stop, **pcad.plot_tcyz_rw1)                
+    plot_ltt('tpcp_rw2', start=start, stop=stop, **pcad.plot_tpcp_rw2)                
+    plot_ltt('tpcp_rw3', start=start, stop=stop, **pcad.plot_tpcp_rw3)                
+    #
+    plot_ltt('tpcm_rw4', start=start, stop=stop, **pcad.plot_tpcm_rw4)                
+    plot_ltt('tpcm_rw5', start=start, stop=stop, **pcad.plot_tpcm_rw5)                
+    plot_ltt('tcyz_rw6', start=start, stop=stop, **pcad.plot_tcyz_rw6)                
+
+    # RW Bearing Temperatures ------------------------
+    plot_ltt('arwa1bt', start=start, stop=stop, **pcad.plot_arwa1bt)                 
+    plot_ltt('arwa2bt', start=start, stop=stop, **pcad.plot_arwa2bt)                 
+    plot_ltt('arwa3bt', start=start, stop=stop, **pcad.plot_arwa3bt)                 
+    #
+    plot_ltt('arwa4bt', start=start, stop=stop, **pcad.plot_arwa4bt)                 
+    plot_ltt('arwa5bt', start=start, stop=stop, **pcad.plot_arwa5bt)                 
+    plot_ltt('arwa6bt', start=start, stop=stop, **pcad.plot_arwa6bt)                 
+
+    # RW Delta (Compartment - Bearing) Temperatures ------
+    plot_ltt('dp_rw1_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw1_delta_temp)
+    plot_ltt('dp_rw2_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw2_delta_temp)
+    plot_ltt('dp_rw3_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw3_delta_temp)
+    #
+    plot_ltt('dp_rw4_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw4_delta_temp)
+    plot_ltt('dp_rw5_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw5_delta_temp)
+    plot_ltt('dp_rw6_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw6_delta_temp)
+
+    # RW Torque Currents -----------------------------
+    #
+    plot_ltt('awd1tqi', start=start, stop=stop, **pcad.plot_awd1tqi)                 
+    plot_ltt('awd2tqi', start=start, stop=stop, **pcad.plot_awd2tqi)                 
+    plot_ltt('awd3tqi', start=start, stop=stop, **pcad.plot_awd3tqi)                 
+    #
+    plot_ltt('awd4tqi', start=start, stop=stop, **pcad.plot_awd4tqi)                 
+    plot_ltt('awd5tqi', start=start, stop=stop, **pcad.plot_awd5tqi)                 
+    plot_ltt('awd6tqi', start=start, stop=stop, **pcad.plot_awd6tqi)                 
+
+    # RW Drag Torque ---------------------------------
+    #
+    plot_ltt('aorwcmd1', start=start, stop=stop, **pcad.plot_aorwcmd1)               
+    plot_ltt('aorwcmd2', start=start, stop=stop, **pcad.plot_aorwcmd2)               
+    plot_ltt('aorwcmd3', start=start, stop=stop, **pcad.plot_aorwcmd3)               
+    #
+    plot_ltt('aorwcmd4', start=start, stop=stop, **pcad.plot_aorwcmd4)               
+    plot_ltt('aorwcmd5', start=start, stop=stop, **pcad.plot_aorwcmd5)               
+    plot_ltt('aorwcmd6', start=start, stop=stop, **pcad.plot_aorwcmd6)               
+       
+    # WDE Converter Voltages -------------------------
+    #
+    plot_ltt('awd1cv5v', start=start, stop=stop, **pcad.plot_awd1cv5v)               
+    plot_ltt('awd2cv5v', start=start, stop=stop, **pcad.plot_awd2cv5v)               
+    plot_ltt('awd3cv5v', start=start, stop=stop, **pcad.plot_awd3cv5v)               
+    #
+    plot_ltt('awd4cv5v', start=start, stop=stop, **pcad.plot_awd4cv5v)               
+    plot_ltt('awd5cv5v', start=start, stop=stop, **pcad.plot_awd5cv5v)               
+    plot_ltt('awd6cv5v', start=start, stop=stop, **pcad.plot_awd6cv5v)               
+
+    # Other Converter Voltages -----------------------
+    #
+    plot_ltt('acpa5cv', start=start, stop=stop, **pcad.plot_acpa5cv)           
+    plot_ltt('ade1p5cv', start=start, stop=stop, **pcad.plot_ade1p5cv)         
+    plot_ltt('afsspc1v', start=start, stop=stop, **pcad.plot_afsspc1v)         
+    #
+    plot_ltt('agws1v', start=start, stop=stop, **pcad.plot_agws1v)             
+    plot_ltt('agws2v', start=start, stop=stop, **pcad.plot_agws2v)             
+    plot_ltt('aioap5cv', start=start, stop=stop, **pcad.plot_aioap5cv)         
+    #
+    plot_ltt('aspea5cv', start=start, stop=stop, **pcad.plot_aspea5cv)               
+    plot_ltt('avd1cv5v', start=start, stop=stop, **pcad.plot_avd1cv5v)               
+
+    # EPIC Register Mismatches & CPE Error Count ------
+    #
+    plot_ltt('aoepicer', start=start, stop=stop, **pcad.plot_aoepicer)               
+    plot_ltt('aocpestc', start=start, stop=stop, **pcad.plot_aocpestc)               
+
+
+##-------------------------------------------------------------
+# Define PROP Custom LTT Plots
+def prop_ltts(start, stop):
+    plot_ltt('pcm01t', start=start, stop=stop, **prop.plot_pcm01t)
+    plot_ltt('pcm02t', start=start, stop=stop, **prop.plot_pcm02t)
+    plot_ltt('pcm03t', start=start, stop=stop, **prop.plot_pcm03t)
+    plot_ltt('pcm04t', start=start, stop=stop, **prop.plot_pcm04t)
+    plot_ltt('pfdm101t', start=start, stop=stop, **prop.plot_pfdm101t)
+    plot_ltt('pfdm102t', start=start, stop=stop, **prop.plot_pfdm102t)
+    plot_ltt('pfdm201t', start=start, stop=stop, **prop.plot_pfdm201t)
+    plot_ltt('pfdm202t', start=start, stop=stop, **prop.plot_pfdm202t)
+    plot_ltt('pffp01t', start=start, stop=stop, **prop.plot_pffp01t)
+    plot_ltt('pftank1t', start=start, stop=stop, **prop.plot_pftank1t)
+    plot_ltt('pftank2t', start=start, stop=stop, **prop.plot_pftank2t)
+    plot_ltt('pftankip', start=start, stop=stop, **prop.plot_pftankip)
+    plot_ltt('pftankop', start=start, stop=stop, **prop.plot_pftankop)
+    plot_ltt('phetankp', start=start, stop=stop, **prop.plot_phetankp)
+    plot_ltt('phetankt', start=start, stop=stop, **prop.plot_phetankt)
+    plot_ltt('phofp1t', start=start, stop=stop, **prop.plot_phofp1t)
+    plot_ltt('plaed1at', start=start, stop=stop, **prop.plot_plaed1at)
+    plot_ltt('plaed1bt', start=start, stop=stop, **prop.plot_plaed1bt)
+    plot_ltt('plaed1ct', start=start, stop=stop, **prop.plot_plaed1ct)
+    plot_ltt('plaed1dt', start=start, stop=stop, **prop.plot_plaed1dt)
+    plot_ltt('plaed1et', start=start, stop=stop, **prop.plot_plaed1et)
+    plot_ltt('plaed1ft', start=start, stop=stop, **prop.plot_plaed1ft)
+    plot_ltt('plaed1gt', start=start, stop=stop, **prop.plot_plaed1gt)
+    plot_ltt('plaed1ht', start=start, stop=stop, **prop.plot_plaed1ht)
+    plot_ltt('plaed1it', start=start, stop=stop, **prop.plot_plaed1it)
+    plot_ltt('plaed2at', start=start, stop=stop, **prop.plot_plaed2at)
+    plot_ltt('plaed2bt', start=start, stop=stop, **prop.plot_plaed2bt)
+    plot_ltt('plaed2ct', start=start, stop=stop, **prop.plot_plaed2ct)
+    plot_ltt('plaed2dt', start=start, stop=stop, **prop.plot_plaed2dt)
+    plot_ltt('plaed2et', start=start, stop=stop, **prop.plot_plaed2et)
+    plot_ltt('plaed2ft', start=start, stop=stop, **prop.plot_plaed2ft)
+    plot_ltt('plaed2gt', start=start, stop=stop, **prop.plot_plaed2gt)
+    plot_ltt('plaed2ht', start=start, stop=stop, **prop.plot_plaed2ht)
+    plot_ltt('plaed2it', start=start, stop=stop, **prop.plot_plaed2it)
+    plot_ltt('plaed3at', start=start, stop=stop, **prop.plot_plaed3at)
+    plot_ltt('plaed3bt', start=start, stop=stop, **prop.plot_plaed3bt)
+    plot_ltt('plaed3ct', start=start, stop=stop, **prop.plot_plaed3ct)
+    plot_ltt('plaed3dt', start=start, stop=stop, **prop.plot_plaed3dt)
+    plot_ltt('plaed3et', start=start, stop=stop, **prop.plot_plaed3et)
+    plot_ltt('plaed3ft', start=start, stop=stop, **prop.plot_plaed3ft)
+    plot_ltt('plaed3gt', start=start, stop=stop, **prop.plot_plaed3gt)
+    plot_ltt('plaed3ht', start=start, stop=stop, **prop.plot_plaed3ht)
+    plot_ltt('plaed3it', start=start, stop=stop, **prop.plot_plaed3it)
+    plot_ltt('plaed4at', start=start, stop=stop, **prop.plot_plaed4at)
+    plot_ltt('plaed4bt', start=start, stop=stop, **prop.plot_plaed4bt)
+    plot_ltt('plaed4ct', start=start, stop=stop, **prop.plot_plaed4ct)
+    plot_ltt('plaed4dt', start=start, stop=stop, **prop.plot_plaed4dt)
+    plot_ltt('plaed4et', start=start, stop=stop, **prop.plot_plaed4et)
+    plot_ltt('plaed4ft', start=start, stop=stop, **prop.plot_plaed4ft)
+    plot_ltt('plaed4gt', start=start, stop=stop, **prop.plot_plaed4gt)
+    plot_ltt('plaed4ht', start=start, stop=stop, **prop.plot_plaed4ht)
+    plot_ltt('plaed4it', start=start, stop=stop, **prop.plot_plaed4it)
+    plot_ltt('plaev1at', start=start, stop=stop, **prop.plot_plaev1at)
+    plot_ltt('plaev1bt', start=start, stop=stop, **prop.plot_plaev1bt)
+    plot_ltt('plaev2at', start=start, stop=stop, **prop.plot_plaev2at)
+    plot_ltt('plaev2bt', start=start, stop=stop, **prop.plot_plaev2bt)
+    plot_ltt('plaev3at', start=start, stop=stop, **prop.plot_plaev3at)
+    plot_ltt('plaev3bt', start=start, stop=stop, **prop.plot_plaev3bt)
+    plot_ltt('plaev4at', start=start, stop=stop, **prop.plot_plaev4at)
+    plot_ltt('plaev4bt', start=start, stop=stop, **prop.plot_plaev4bt)
+    plot_ltt('pline01t', start=start, stop=stop, **prop.plot_pline01t)
+    plot_ltt('pline02t', start=start, stop=stop, **prop.plot_pline02t)
+    plot_ltt('pline03t', start=start, stop=stop, **prop.plot_pline03t)
+    plot_ltt('pline04t', start=start, stop=stop, **prop.plot_pline04t)
+    plot_ltt('pline05t', start=start, stop=stop, **prop.plot_pline05t)
+    plot_ltt('pline06t', start=start, stop=stop, **prop.plot_pline06t)
+    plot_ltt('pline07t', start=start, stop=stop, **prop.plot_pline07t)
+    plot_ltt('pline08t', start=start, stop=stop, **prop.plot_pline08t)
+    plot_ltt('pline09t', start=start, stop=stop, **prop.plot_pline09t)
+    plot_ltt('pline10t', start=start, stop=stop, **prop.plot_pline10t)
+    plot_ltt('pline11t', start=start, stop=stop, **prop.plot_pline11t)
+    plot_ltt('pline12t', start=start, stop=stop, **prop.plot_pline12t)
+    plot_ltt('pline13t', start=start, stop=stop, **prop.plot_pline13t)
+    plot_ltt('pline14t', start=start, stop=stop, **prop.plot_pline14t)
+    plot_ltt('pline15t', start=start, stop=stop, **prop.plot_pline15t)
+    plot_ltt('pline16t', start=start, stop=stop, **prop.plot_pline16t)
+    plot_ltt('pm1thv1t', start=start, stop=stop, **prop.plot_pm1thv1t)
+    plot_ltt('pm1thv2t', start=start, stop=stop, **prop.plot_pm1thv2t)
+    plot_ltt('pm2thv1t', start=start, stop=stop, **prop.plot_pm2thv1t)
+    plot_ltt('pm2thv2t', start=start, stop=stop, **prop.plot_pm2thv2t)
+    plot_ltt('pm3thv1t', start=start, stop=stop, **prop.plot_pm3thv1t)
+    plot_ltt('pm3thv2t', start=start, stop=stop, **prop.plot_pm3thv2t)
+    plot_ltt('pm4thv1t', start=start, stop=stop, **prop.plot_pm4thv1t)
+    plot_ltt('pm4thv2t', start=start, stop=stop, **prop.plot_pm4thv2t)
+    plot_ltt('pmfp01t', start=start, stop=stop, **prop.plot_pmfp01t)
+    plot_ltt('pmtank1t', start=start, stop=stop, **prop.plot_pmtank1t)
+    plot_ltt('pmtank2t', start=start, stop=stop, **prop.plot_pmtank2t)
+    plot_ltt('pmtank3t', start=start, stop=stop, **prop.plot_pmtank3t)
+    plot_ltt('pmtankp', start=start, stop=stop, **prop.plot_pmtankp)
+    plot_ltt('pr1tv01t', start=start, stop=stop, **prop.plot_pr1tv01t)
+    plot_ltt('pr1tv02t', start=start, stop=stop, **prop.plot_pr1tv02t)
+    plot_ltt('pr2tv01t', start=start, stop=stop, **prop.plot_pr2tv01t)
+    plot_ltt('pr2tv02t', start=start, stop=stop, **prop.plot_pr2tv02t)
+    plot_ltt('pr3tv01t', start=start, stop=stop, **prop.plot_pr3tv01t)
+    plot_ltt('pr3tv02t', start=start, stop=stop, **prop.plot_pr3tv02t)
+    plot_ltt('pr4tv01t', start=start, stop=stop, **prop.plot_pr4tv01t)
+    plot_ltt('pr4tv02t', start=start, stop=stop, **prop.plot_pr4tv02t)
+    plot_ltt('pxdm01t', start=start, stop=stop, **prop.plot_pxdm01t)
+    plot_ltt('pxdm02t', start=start, stop=stop, **prop.plot_pxdm02t)
+    plot_ltt('pxtank1t', start=start, stop=stop, **prop.plot_pxtank1t)
+    plot_ltt('pxtank2t', start=start, stop=stop, **prop.plot_pxtank2t)
+    plot_ltt('pxtankip', start=start, stop=stop, **prop.plot_pxtankip)
+    plot_ltt('pxtankop', start=start, stop=stop, **prop.plot_pxtankop)
+
+##-------------------------------------------------------------
+# Define PROP Custom LTT Plots
+def prop_zoom_ltts(start, stop):
+    plot_ltt('pcm01t', ylim=[95,150], plot_limits=False, yellow=[85,145], 
+            red=[80,160])
+    plot_ltt('pcm02t', ylim=[95,150], plot_limits=False, yellow=[85,145], 
+            red=[80,160])
+    plot_ltt('pcm03t', ylim=[95,150], plot_limits=False, yellow=[65,145], 
+            red=[60,160])
+    plot_ltt('pcm04t', ylim=[95,150], plot_limits=False, yellow=[65,145], 
+            red=[60,160])
+    plot_ltt('pmtank1t', ylim=[65,105])
+    plot_ltt('pmtank2t', ylim=[65,105])
+    plot_ltt('pmtank3t', ylim=[65,105])
+    plot_ltt('pftank1t', ylim=[65,105], plot_limits=False, yellow=[47,100], 
+            red=[40,120])
+    plot_ltt('pftank2t', ylim=[65,105], plot_limits=False, yellow=[47,100], 
+            red=[40,120])
+    plot_ltt('pftankip', ylim=[275, 305])
+    plot_ltt('pftankop', ylim=[275, 305])
+    plot_ltt('pr1tv01t', ylim=[40, 160])
+    plot_ltt('pr1tv02t', ylim=[40, 160])
+    plot_ltt('pr2tv01t', ylim=[40, 160])
+    plot_ltt('pr2tv02t', ylim=[40, 160])
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
