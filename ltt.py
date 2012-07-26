@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as pp
+from matplotlib import ticker
 
 from Ska.engarchive import fetch_eng as fetch
 from Ska.Matplotlib import plot_cxctime
@@ -37,6 +38,9 @@ def plot_ltt(var, **kwargs):
     :plot_limits:  Plot database yellow caution and red warning limits 
                    (default is True)
     :yellow:       User-defined yellow caution limit lines (default is none)
+    :min_mark:     User-defined marker for minimum values (default is 'b:')
+    :max_mark:     User-defined marker for maximum values (default is 'g:')
+    :mean_mark:    User-defined marker for mean values (default is 'k+')
     :red:          User-defined red warning limit lines  (default is none)                
     :subplot:      Subplot information in [rows, columns, subplot number] 
                    (default is [1, 1, 1])
@@ -67,7 +71,7 @@ def plot_ltt(var, **kwargs):
     LTTplot('aosares1', start='2003:001', stop='2003:100', fig_width=10, 
             fig_height=6)
     LTTplot('dp_css1_npm_sun', plot_means=False, plot_maxes=False, 
-             plot_stds=False, legend=True)
+             plot_stds=False, min_mark='rd', legend=True)
     """
     var = var.lower()
     start = kwargs.pop('start', '2000:001')
@@ -83,9 +87,9 @@ def plot_ltt(var, **kwargs):
         data.filter_bad_times(table=getattr(bad, 'bad_' + var))
     
     # Define subplots and figure size
-    # Figure size will vary depending on the number of subplots.
-    # If plotting standard deviations, ax1 will only be used to reference default
-    # axes size.  ax1 will be deleted and data will be plotted on ax2.
+    # Figure size will vary depending on the number of subplots. If 
+    # plotting standard deviations, ax1 will only be used to reference 
+    # default axes size.  ax1 will be deleted and data will be plotted on ax2.
     sub = kwargs.pop('subplot', 111)
     # Convert subplot input to list form if provided by user as integer
     if np.isscalar(sub):
@@ -103,27 +107,34 @@ def plot_ltt(var, **kwargs):
         fig_width = kwargs.pop('fig_width', 8)
         pp.figure(figsize=(fig_width, fig_height))
     ax1 = pp.subplot(sub[0], sub[1], sub[2])
+    ax1.ticklabel_format(useOffset=False)
     if kwargs.get('plot_stds', True):
         ax_pos = ax1.get_position().get_points()
         ax_width = ax_pos[1,0] - ax_pos[0,0]
         ax_height = ax_pos[1,1] - ax_pos[0,1]
         pp.delaxes(ax1)
-        ax2 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .20 * ax_height, ax_width, .80 * ax_height])  
+        ax2 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .20 * ax_height, ax_width, 
+                      .75 * ax_height])  
+        ax2.ticklabel_format(useOffset=False)        
     
     # Plot data
     mult = kwargs.pop('cust_mult', 1)    
     lim = kwargs.pop('limit_lines', True)
     if kwargs.pop('plot_maxes', True):
-        plot_cxctime(data.times, data.maxes * mult, 'g--', label=(stat + ' maxes'))
+        plot_cxctime(data.times, data.maxes * mult, 
+                     kwargs.pop('max_mark', 'g:'), label=(stat + ' maxes'))
     if kwargs.pop('plot_mins', True):
-        plot_cxctime(data.times, data.mins * mult, 'b:', label=(stat + ' mins'))
+        plot_cxctime(data.times, data.mins * mult, 
+                     kwargs.pop('min_mark', 'b:'), label=(stat + ' mins'))
     if kwargs.pop('plot_means', True):
-        plot_cxctime(data.times, data.means * mult, 'k+-', label=(stat + ' means'))
+        plot_cxctime(data.times, data.means * mult, 
+                     kwargs.pop('mean_mark', 'k+'), label=(stat + ' means'))
    
     # Plot limits
     if kwargs.pop('plot_limits', True):
         # Check if single limit set exists in TDB
-        if hasattr(data, 'tdb') and np.size(data.tdb.Tlmt) == 1 and data.tdb.Tlmt is not None:
+        if (hasattr(data, 'tdb') and np.size(data.tdb.Tlmt) == 1 and 
+            data.tdb.Tlmt is not None):
             pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[4] * mult, 
                                          data.tdb.Tlmt[4] * mult]), 'r')
             pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[2] * mult, 
@@ -167,14 +178,25 @@ def plot_ltt(var, **kwargs):
     
     # Add legend
     if kwargs.pop('legend', False):
-        legend(loc='best')
+        pp.legend(loc='best')
     
     # Plot standard deviations on ax3
     if kwargs.get('plot_stds', True):
         ax2.set_xticklabels([])
-        ax3 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .05 * ax_height, ax_width, .15 * ax_height])
-        ax3.set_yticklabels([])
-        plot_cxctime(data.times, data.stds * mult, color='k', label=(stat + ' stdev'))
+        ax3 = pp.axes([ax_pos[0,0], ax_pos[0,1] + .05 * ax_height, 
+                       ax_width, .15 * ax_height])
+        plot_cxctime(data.times, data.stds * mult, color='k', 
+                     label=(stat + ' stdev'))
+        ax3.yaxis.set_major_locator(ticker.MaxNLocator(2))
+        y_ticks = pp.yticks()
+        y_lim = pp.ylim()
+        # prevent overlap between y-axis and stdev y-axis
+        if (y_lim[1] - y_ticks[0][-1]) / y_lim[-1] < .70:
+            pp.yticks(y_ticks[0][:-1])
+       
+    # Ensure xticks aren't rotated
+    ax = pp.gca()
+    pp.setp(ax.get_xticklabels(), 'rotation', 0)
     
     # Save and close figure
     s = kwargs.pop('savefig', True)
@@ -195,10 +217,14 @@ def pcad_ltts(start, stop):
     plot_ltt('aflcaah', start=start, stop=stop, **pcad.plot_aflcaah)
 
     # Min CSS Counts in NPM, Sun ---------------------
-    plot_ltt('dp_css1_npm_sun', start=start, stop=stop, **pcad.plot_dp_css1_npm_sun)
-    plot_ltt('dp_css2_npm_sun', start=start, stop=stop, **pcad.plot_dp_css2_npm_sun)
-    plot_ltt('dp_css3_npm_sun', start=start, stop=stop, **pcad.plot_dp_css3_npm_sun)
-    plot_ltt('dp_css4_npm_sun', start=start, stop=stop, **pcad.plot_dp_css4_npm_sun)  
+    plot_ltt('dp_css1_npm_sun', start=start, stop=stop, 
+             **pcad.plot_dp_css1_npm_sun)
+    plot_ltt('dp_css2_npm_sun', start=start, stop=stop, 
+             **pcad.plot_dp_css2_npm_sun)
+    plot_ltt('dp_css3_npm_sun', start=start, stop=stop, 
+             **pcad.plot_dp_css3_npm_sun)
+    plot_ltt('dp_css4_npm_sun', start=start, stop=stop, 
+             **pcad.plot_dp_css4_npm_sun)  
     
     # FSS Angles -------------------------------------
     #
@@ -209,7 +235,8 @@ def pcad_ltts(start, stop):
     plot_ltt('aobetang', start=start, stop=stop, **pcad.plot_aobetang)                
 
     # FSS / CSS Sun Vector Difference ----------------
-    plot_ltt('dp_fss_css_angle_diff', start=start, stop=stop, **pcad.plot_dp_fss_css_angle_diff)            
+    plot_ltt('dp_fss_css_angle_diff', start=start, stop=stop, 
+             **pcad.plot_dp_fss_css_angle_diff)            
 
     # Solar Array Angles -----------------------------
     #
@@ -283,13 +310,19 @@ def pcad_ltts(start, stop):
     plot_ltt('arwa6bt', start=start, stop=stop, **pcad.plot_arwa6bt)                 
 
     # RW Delta (Compartment - Bearing) Temperatures ------
-    plot_ltt('dp_rw1_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw1_delta_temp)
-    plot_ltt('dp_rw2_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw2_delta_temp)
-    plot_ltt('dp_rw3_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw3_delta_temp)
+    plot_ltt('dp_rw1_delta_temp', start=start, stop=stop, 
+             **pcad.plot_dp_rw1_delta_temp)
+    plot_ltt('dp_rw2_delta_temp', start=start, stop=stop, 
+             **pcad.plot_dp_rw2_delta_temp)
+    plot_ltt('dp_rw3_delta_temp', start=start, stop=stop, 
+             **pcad.plot_dp_rw3_delta_temp)
     #
-    plot_ltt('dp_rw4_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw4_delta_temp)
-    plot_ltt('dp_rw5_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw5_delta_temp)
-    plot_ltt('dp_rw6_delta_temp', start=start, stop=stop, **pcad.plot_dp_rw6_delta_temp)
+    plot_ltt('dp_rw4_delta_temp', start=start, stop=stop, 
+             **pcad.plot_dp_rw4_delta_temp)
+    plot_ltt('dp_rw5_delta_temp', start=start, stop=stop, 
+             **pcad.plot_dp_rw5_delta_temp)
+    plot_ltt('dp_rw6_delta_temp', start=start, stop=stop, 
+             **pcad.plot_dp_rw6_delta_temp)
 
     # RW Torque Currents -----------------------------
     #
