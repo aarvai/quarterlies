@@ -370,7 +370,12 @@ def pcad_ltts(start, stop):
     # EPIC Register Mismatches & CPE Error Count ------
     #
     plot_ltt('aoepicer', start=start, stop=stop, **pcad.plot_aoepicer)               
-    plot_ltt('aocpestc', start=start, stop=stop, **pcad.plot_aocpestc)               
+    plot_ltt('aocpestc', start=start, stop=stop, **pcad.plot_aocpestc)       
+    
+    # Pointing Control (Attitude Errors) --------------
+    # 
+    plot_ltt('aoatter2', start=start, stop=stop, **pcad.plot_aoatter2)
+    plot_ltt('aoatter3', start=start, stop=stop, **pcad.plot_aoatter3)    
 
 
 ##-------------------------------------------------------------
