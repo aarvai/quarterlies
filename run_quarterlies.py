@@ -1,4 +1,3 @@
-from os import chdir, mkdir, path
 from matplotlib import pyplot as pp
 
 from Chandra import Time
@@ -6,20 +5,17 @@ from Chandra import Time
 import ltt
 import pcad_plots
 import prop_plots
+from utilities import mkdir_cd 
 
 ##-------------------------------------------------------------
-# Inputs
+# Inputs - Quarter start and stop
 
-start = '2011:212:00:00:00'
-stop = '2012:031:00:00:00'
+start = '2012:032:00:00:00'
+stop = '2012:213:00:00:00'
 
 ##-------------------------------------------------------------
 # Utilities
-def mkdir_cd(dir):
-    # Make a directory (if doesn't already exist) and cd to it.
-    if not path.exists(dir):
-        mkdir(dir)
-    chdir(dir) 
+
 
 ##-------------------------------------------------------------
 # Run Quarterlies
@@ -36,8 +32,18 @@ mkdir_cd(new_dir)
 mkdir_cd(pcad_dir)
 mkdir_cd('mission')
 ltt.pcad_ltts('2000:001', stop)
-mkdir_cd('../quarter')
+pcad_plots.fss('2000:001', stop)
+#pcad_plots.pointing_stab('pitch', '2000:001', stop)
+#pcad_plots.pointing_stab('yaw', '2000:001', stop)
+#pcad_plots.cmd_vs_act_torque('2000:001', stop)
+mkdir_cd('drag_torque')
+pcad_plots.drag_torque('2000:001', stop)
+mkdir_cd('../../quarter')
 ltt.pcad_ltts(start, stop)
+pcad_plots.fss(start, stop)
+#pcad_plots.pointing_stab('pitch', start, stop)
+#pcad_plots.pointing_stab('yaw', start, stop)
+#pcad_plots.cmd_vs_act_torque(start, stop)
 mkdir_cd('../../' + prop_dir)
 mkdir_cd('mission')
 ltt.prop_ltts('2002:001:00:00:00', stop)
