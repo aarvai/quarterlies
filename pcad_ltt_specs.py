@@ -138,6 +138,25 @@ plot_aoalpang =              {'plot_limits': False,
                               'subplot': [2,1,1], 
                               'savefig': False}
 		             
+plot_aoatter2 =              {'plot_limits': False,
+                              'plot_mins': False,
+                              'plot_maxes': False,
+                              'cust_unit': 'ARCSEC',
+                              'cust_mult': 3600 * 180 / pi,
+                              'cust_title': 'MEAN PITCH POINTING CONTROL - AOATTER2',
+                              'subplot': [2,1,1],
+                              'savefig': False}
+
+plot_aoatter3 =              {'plot_limits': False,
+                              'plot_mins': False,
+			      'plot_maxes': False,
+			      'cust_unit': 'ARCSEC',
+			      'cust_mult': 3600 * 180 / pi,
+                              'cust_title': 'MEAN YAW POINTING CONTROL - AOATTER3',
+                              'subplot': [2,1,2],
+                              'samefig': True,
+                              'saveas': '33_POINTING_CONTROL.png'}                              
+
 plot_aobetang =              {'plot_limits': False, 
                               'subplot': [2,1,2], 
                               'samefig': True, 
