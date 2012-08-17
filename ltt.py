@@ -128,7 +128,7 @@ def plot_ltt(var, **kwargs):
                      kwargs.pop('min_mark', 'b:'), label=(stat + ' mins'))
     if kwargs.pop('plot_means', True):
         plot_cxctime(data.times, data.means * mult, 
-                     kwargs.pop('mean_mark', 'k+'), label=(stat + ' means'))
+                     kwargs.pop('mean_mark', 'k+-'), label=(stat + ' means'))
    
     # Plot limits
     if kwargs.pop('plot_limits', True):
@@ -144,8 +144,8 @@ def plot_ltt(var, **kwargs):
             pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[5] * mult, 
                                          data.tdb.Tlmt[5] * mult]), 'r')  
             if ~kwargs.has_key('ylim'):
-                pp.ylim(np.array([data.tdb.Tlmt[4]-10.0, 
-                                  data.tdb.Tlmt[5]+10.0]))
+                pp.ylim(np.array([data.tdb.Tlmt[4] - 10.0, 
+                                  data.tdb.Tlmt[5] + 10.0]))
     
     # Add title
     if kwargs.has_key('cust_title'):
@@ -334,7 +334,7 @@ def pcad_ltts(start, stop):
     plot_ltt('awd5tqi', start=start, stop=stop, **pcad.plot_awd5tqi)                 
     plot_ltt('awd6tqi', start=start, stop=stop, **pcad.plot_awd6tqi)                 
 
-    # RW Drag Torque ---------------------------------
+    # RW Commanded Torque ---------------------------------
     #
     plot_ltt('aorwcmd1', start=start, stop=stop, **pcad.plot_aorwcmd1)               
     plot_ltt('aorwcmd2', start=start, stop=stop, **pcad.plot_aorwcmd2)               
@@ -505,10 +505,7 @@ def prop_zoom_ltts(start, stop):
             red=[40,120])
     plot_ltt('pftankip', ylim=[275, 305])
     plot_ltt('pftankop', ylim=[275, 305])
-    plot_ltt('pr1tv01t', ylim=[40, 160])
-    plot_ltt('pr1tv02t', ylim=[40, 160])
-    plot_ltt('pr2tv01t', ylim=[40, 160])
-    plot_ltt('pr2tv02t', ylim=[40, 160])
+
     
     
     
