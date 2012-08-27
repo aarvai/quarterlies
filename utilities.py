@@ -18,7 +18,7 @@ def smaller_axes(ax1):
     pp.delaxes(ax1)
     ax2 = pp.axes([ax_pos[0,0] + .10 * ax_width, ax_pos[0,1] + .20 * ax_height, 
                   .90 * ax_width, .75 * ax_height])  
-    return ax2, ax_pos, ax_width, ax_height
+    return ax2
 
 
     
