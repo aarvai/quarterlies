@@ -41,11 +41,13 @@ plot_pftank2t = {'ylim': [30,130],
                  'yellow': [47,100], 
                  'red': [40,120]}
 
-plot_pftankip = {'plot_limits': False, 
+plot_pftankip = {'ylim': [230,310],
+                 'plot_limits': False, 
                  'yellow': [270, 296], 
                  'red': [240, 300]}
 
-plot_pftankop = {'plot_limits': False, 
+plot_pftankop = {'ylim': [230,310],
+                 'plot_limits': False, 
                  'yellow': [270, 296], 
                  'red': [240, 300]}
 
