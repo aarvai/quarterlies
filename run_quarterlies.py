@@ -1,4 +1,5 @@
 from matplotlib import pyplot as pp
+from os import chdir
 
 from Chandra import Time
 
@@ -33,7 +34,7 @@ pcad_plots.fss('2000:001', stop)
 #pcad_plots.pointing_stab('yaw', '2000:001', stop)
 #pcad_plots.cmd_vs_act_torque('2000:001', stop)
 mkdir_cd('drag_torque')
-pcad_plots.drag_torque('2000:001', stop)
+pcad_plots.drag_torque('2000:001', stop, plot_months=False)
 mkdir_cd('../../quarter')
 ltt.pcad_ltts(start, stop)
 pcad_plots.fss(start, stop)
