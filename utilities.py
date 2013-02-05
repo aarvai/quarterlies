@@ -1,3 +1,4 @@
+import numpy as np
 from os import chdir, mkdir, path
 from matplotlib import pyplot as pp
 
@@ -20,5 +21,16 @@ def smaller_axes(ax1):
                   .90 * ax_width, .75 * ax_height])  
     return ax2
 
+def reshape_array(array, num_rows, order='F'):
+    # Return an array based on the values of the input array, but reshaped
+    # with a user-specified number of rows.  Excess data will be trucated.
+    #
+    # Order = 'F' (column-major, FORTRAN-style)
+    #       = 'C' (row-major, C-style)
+    if np.mod(len(array),num_rows) > 0:
+        out = array[:-np.mod(len(array), num_rows)].reshape((num_rows, np.floor(len(array) / int(num_rows))), order=order)
+    else:
+        out = array.reshape((num_rows, len(stdev) / int(num_rows)), order=order)
+    return out
 
     

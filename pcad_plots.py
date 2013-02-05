@@ -6,7 +6,7 @@ from Ska.Matplotlib import plot_cxctime
 from Chandra import Time
 
 import filter_times as bad
-from utilities import smaller_axes
+from utilities import smaller_axes, reshape_array
 
 
 ##-----------------------------------------------------
@@ -35,27 +35,47 @@ def fss(start, stop, savefig=True):
         pp.savefig('fss_angles.png')
         pp.close()        
 
-def pointing_stab(error_axis, start, stop, savefig=True):  #NOT DONE YET!  NEEDS 95%
+def pointing_stab(error_axis, start, stop, savefig=True):  #NOT DONE YET!  Doesn't match expected results
+    
     # Identify msid corresponding to attitude error in selected axis
     i = ['roll', 'pitch','yaw'].index(error_axis.lower()) 
     msid = 'aoatter' + str(i + 1)
-    print error_axis
-    print msid
+    
     # Fetch data and interpolate to 10 second samples
-    data = fetch.Msid(msid, start, stop)
-    data.interpolate(dt=10)
-    t = data.times
-    err = data.vals
-    # Reshape with a new column for each 24 hour period 
-    err_by_day = err[:-np.mod(len(err),8640)].reshape((8640, np.floor(len(err) / 8640.)))
+    data = fetch.Msidset([msid, 'aopcadmd', 'aofunlst', 'aoacaseq'], start, stop)
+    data.interpolate(dt=1.0)
+    t = data[msid].times
+    err = data[msid].vals * 180 / np.pi * 3600 # conv rad to arcsec
+    # Reshape with a new column for each 10.0 sec period
+    err_by_10sec = reshape_array(err, 10)
+    # Compute a standard deviation for each period
+    stdev = np.std(err_by_10sec, axis=0)
+    # Reshape with a new column for each day
+    stdev_by_day = reshape_array(stdev, 8640)
+    
+    # Create filter for NPM, Kalman (+180 sec), and no momentum dumps (+900 sec)
+    npm = (data['aopcadmd'].vals == 'NPNT')
+    kalm = (data['aoacaseq'].vals == 'KALM')
+    kalm_3min = np.append(np.zeros(180, dtype=bool), kalm[180:]) 
+    no_dump = (data['aofunlst'].vals == 'NONE')
+    no_dump_15min = np.append(np.zeros(900, dtype=bool), no_dump[900:]) 
+    ok = npm & kalm & kalm_3min & no_dump & no_dump_15min
+    # Reshape with a new column for each 10.0 sec period
+    ok_by_10sec = reshape_array(ok, 10)
+    # Compute a filter for each 10.0 sec period
+    ok_10sec = multiply.reduce(ok_by_10sec, axis=0)
+    # Reshape with a new column for each day
+    ok_by_day = reshape_array(ok_10sec, 8640)
+    
+    # Compute 95th percentile for each daily set of standard deviations, only including "ok" points
+    point_stab = [np.percentile(stdev_by_day[:,i][ok_by_day[:,i]], 95) for i in range(ok_by_day.shape[1])]
+    
     # Select a timestamp in the middle of the 24 hour period to represent the day
-    t_rep = t[4319::8640][:err_by_day.shape[1]]
-    # Compute standard dev for each day
-    point_stab = np.std(err_by_day, 1)
+    t_rep = t[4319::8640][:ok_by_day.shape[1]]
     # Plot results
     plot_cxctime(t_rep, point_stab)
     pp.title(error_axis.upper() + ' POINTING STABILITY')
-    pp.ylabel('deg')
+    pp.ylabel('arcsec')
     if savefig == True:
         pp.savefig(error_axis.lower() + '_pointing_stab.png')
         pp.close()
@@ -73,7 +93,8 @@ def drag_torque(start, stop, dt=328, verbose=False, plot_months=True, savefig=Tr
     
     # Filter for NPM (+2 min buffer), No dumps, and Rad Mon Enabled
     npm = (data['aopcadmd'].vals == 'NPNT')
-    npm_2minbuffer = npm & np.append(np.zeros(4, dtype=bool), npm[4:]) 
+    i_2min = np.ceil(120.0 / dt)
+    npm_2minbuffer = npm & np.append(np.zeros(i_2min, dtype=bool), npm[i_2min:]) 
     ok = ((data['aofunlst'].vals == 'NONE') & 
           (data['coradmen'].vals == 'ENAB') & npm_2minbuffer)    
     
@@ -95,9 +116,9 @@ def drag_torque(start, stop, dt=328, verbose=False, plot_months=True, savefig=Tr
     dates = [str(year) + '-' + str(month).zfill(2) + '-01 00:00:00.00' 
             for year in years for month in months]
     dates.append(str(int(end_year) + 1) + '-01-01 00:00:00.00')
-    start_i = np.nonzero([(dates[i][:7] == Time.DateTime(start).iso[:7]) for i in range(len(dates))])
-    stop_i = np.nonzero([(dates[i][:7] == Time.DateTime(stop).iso[:7]) for i in range(len(dates))])
-    dates = dates[start_i[0]:stop_i[0] + 2] 
+    i_start = np.nonzero([(dates[i][:7] == Time.DateTime(start).iso[:7]) for i in range(len(dates))])
+    i_stop = np.nonzero([(dates[i][:7] == Time.DateTime(stop).iso[:7]) for i in range(len(dates))])
+    dates = dates[i_start[0]:i_stop[0] + 2] 
     
     # Compute slopes for each month
     slopes = np.empty((len(dates) - 1, 6))
@@ -131,10 +152,10 @@ def drag_torque(start, stop, dt=328, verbose=False, plot_months=True, savefig=Tr
     pp.figure(figsize=(8, 12))
     for rw in np.arange(1, 7):
         ax1 = pp.subplot(6, 1, rw)
-        ax2, ax_pos, ax_width, ax_height = smaller_axes(ax1)
+        ax2 = smaller_axes(ax1)
         # Place datapoint on the 15th of the month (14 days = 1209600 sec)
         plot_cxctime(np.array(Time.DateTime(dates[:-1]).secs) + 1209600, 
-                     slopes[:,rw - 1], 'k-d')
+                     slopes[:,rw - 1], 'k-d', ms=3)
         pp.ylim([.4e-6, 2e-6])
         ax2.yaxis.set_ticks([0.4e-6, .8e-6, 1.2e-6, 1.6e-6, 2e-6])
         pp.setp(ax2.get_xticklabels(), 'rotation', 0)
@@ -182,8 +203,6 @@ def cmd_vs_act_torque(start, stop, savefig=True):   #NOT TESTED YET!
 # Pointing Control and Stability
 #temp=LTTquery([ltt_root 'A_PNT_CTRL_STAB.ltt'],time(1999275),tstop,'keep dat');
 #plot_ltt(temp,2)
-# PITCH_CTRL, MEAN PITCH POINTING CONTROL, ARCSEC, MEAN - added in ltt, but check
-# YAW_CTRL, MEAN YAW POINTING CONTROL, ARCSEC, MEAN - added in ltt, but check
 # PITCH_STAB, PITCH_STAB, ARCSEC, MEAN - above, but not done yet
 # YAW_STAB, YAW_STAB, ARCSEC, MEAN - above, but not done yet
 

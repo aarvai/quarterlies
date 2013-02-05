@@ -11,8 +11,8 @@ from utilities import mkdir_cd
 ##-------------------------------------------------------------
 # Inputs - Quarter start and stop
 
-start = '2012:032:00:00:00'
-stop = '2012:213:00:00:00'
+start = '2012:214:00:00:00'
+stop = '2013:031:00:00:00'
 
 ##-------------------------------------------------------------
 # Run Quarterlies
@@ -30,12 +30,11 @@ mkdir_cd(pcad_dir)
 mkdir_cd('mission')
 ltt.pcad_ltts('2000:001', stop)
 pcad_plots.fss('2000:001', stop)
-#pcad_plots.pointing_stab('pitch', '2000:001', stop)
-#pcad_plots.pointing_stab('yaw', '2000:001', stop)
+#pcad_plots.pointing_stab('pitch', '2000:001:00:00:00', stop)
+#pcad_plots.pointing_stab('yaw', '2000:001:00:00:00', stop)
 #pcad_plots.cmd_vs_act_torque('2000:001', stop)
-mkdir_cd('drag_torque')
 pcad_plots.drag_torque('2000:001', stop, plot_months=False)
-mkdir_cd('../../quarter')
+mkdir_cd('../quarter')
 ltt.pcad_ltts(start, stop)
 pcad_plots.fss(start, stop)
 #pcad_plots.pointing_stab('pitch', start, stop)
