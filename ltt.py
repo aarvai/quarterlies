@@ -358,14 +358,17 @@ def pcad_ltts(start, stop):
     #
     plot_ltt('acpa5cv', start=start, stop=stop, **pcad.plot_acpa5cv)           
     plot_ltt('ade1p5cv', start=start, stop=stop, **pcad.plot_ade1p5cv)         
+    plot_ltt('aspea5cv', start=start, stop=stop, **pcad.plot_aspea5cv)  
+    
     plot_ltt('afsspc1v', start=start, stop=stop, **pcad.plot_afsspc1v)         
-    #
+    plot_ltt('afsspc2v', start=start, stop=stop, **pcad.plot_afsspc2v)         
+    
     plot_ltt('agws1v', start=start, stop=stop, **pcad.plot_agws1v)             
     plot_ltt('agws2v', start=start, stop=stop, **pcad.plot_agws2v)             
     plot_ltt('aioap5cv', start=start, stop=stop, **pcad.plot_aioap5cv)         
-    #
-    plot_ltt('aspea5cv', start=start, stop=stop, **pcad.plot_aspea5cv)               
-    plot_ltt('avd1cv5v', start=start, stop=stop, **pcad.plot_avd1cv5v)               
+    
+    plot_ltt('avd1cv5v', start=start, stop=stop, **pcad.plot_avd1cv5v) 
+    plot_ltt('avd2cv5v', start=start, stop=stop, **pcad.plot_avd2cv5v)     
 
     # EPIC Register Mismatches & CPE Error Count ------
     #

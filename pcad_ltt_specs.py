@@ -25,13 +25,22 @@ plot_aflcaah =               {'plot_limits': False,
                               'samefig': True, 
                               'saveas': '01_ACA_TEMP_SOH.png'}
 		       
-plot_afsspc1v =              {'plot_limits': False, 
-                              'subplot': [3,1,3], 
+plot_afsspc1v =              {'ylim': [3.495, 3.530],
+                              'plot_limits': False, 
+                              'subplot': [3,1,1], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
                               'cust_title': 'MEAN FSS-A +5V CONVERTER VOLTAGE - AFSSPC1V', 
+                              'savefig': False} 
+
+plot_afsspc2v =              {'ylim': [3.495, 3.530],
+                              'plot_limits': False, 
+                              'subplot': [3,1,2], 
+                              'plot_mins': False, 
+                              'plot_maxes': False, 
+                              'cust_title': 'MEAN FSS-B +5V CONVERTER VOLTAGE - AFSSPC2V', 
                               'samefig': True, 
-                              'saveas': '04_CONV_VOLT_OTHER_1.png'} 
+                              'saveas': '34_CONV_VOLT_FSS.png'} 
 		        
 plot_agws1v =                {'plot_limits': False, 
                               'subplot': [3,1,1], 
@@ -197,14 +206,14 @@ plot_aorwcmd1 =              {'plot_limits': False,
                               'subplot': [3,1,1], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
-                              'cust_title': 'MEAN RW #1 COMMANDED DRAG TORQUE - AORWCMD1', 
+                              'cust_title': 'MEAN RW #1 COMMANDED TORQUE - AORWCMD1', 
                               'savefig': False}
 		             
 plot_aorwcmd2 =              {'plot_limits': False, 
                               'subplot': [3,1,2], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
-                              'cust_title': 'MEAN RW #2 COMMANDED DRAG TORQUE - AORWCMD2', 
+                              'cust_title': 'MEAN RW #2 COMMANDED TORQUE - AORWCMD2', 
                               'samefig': True, 
                               'savefig': False}  
 
@@ -212,22 +221,22 @@ plot_aorwcmd3 =              {'plot_limits': False,
                               'subplot': [3,1,3], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
-                              'cust_title': 'MEAN RW #3 COMMANDED DRAG TORQUE - AORWCMD3', 
+                              'cust_title': 'MEAN RW #3 COMMANDED TORQUE - AORWCMD3', 
                               'samefig': True, 
-                              'saveas': '14_RW_DRAG_TORQUE_1.png'}   
+                              'saveas': '14_RW_CMD_TORQUE_1.png'}   
 		             
 plot_aorwcmd4 =              {'plot_limits': False, 
                               'subplot': [3,1,1], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
-                              'cust_title': 'MEAN RW #4 COMMANDED DRAG TORQUE - AORWCMD4', 
+                              'cust_title': 'MEAN RW #4 COMMANDED TORQUE - AORWCMD4', 
                               'savefig': False}
 
 plot_aorwcmd5 =              {'plot_limits': False, 
                               'subplot': [3,1,2], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
-                              'cust_title': 'MEAN RW #5 COMMANDED DRAG TORQUE - AORWCMD5', 
+                              'cust_title': 'MEAN RW #5 COMMANDED TORQUE - AORWCMD5', 
                               'samefig': True, 
                               'savefig': False}  
 
@@ -235,9 +244,9 @@ plot_aorwcmd6 =              {'plot_limits': False,
                               'subplot': [3,1,3], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
-                              'cust_title': 'MEAN RW #6 COMMANDED DRAG TORQUE - AORWCMD6', 
+                              'cust_title': 'MEAN RW #6 COMMANDED TORQUE - AORWCMD6', 
                               'samefig': True, 
-                              'saveas': '15_RW_DRAG_TORQUE_2.png'}      
+                              'saveas': '15_RW_CMD_TORQUE_2.png'}      
 
 plot_aorwspd1 =              {'plot_limits': False, 
                               'cust_unit': 'RPM', 
@@ -317,19 +326,27 @@ plot_arwa6bt=                {'plot_limits': False,
                               'saveas': '19_RW_BEARING_TEMPS_2.png'}      
 
 plot_aspea5cv =              {'plot_limits': False, 
-                              'subplot': [3,1,1], 
+                              'subplot': [3,1,3], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
                               'cust_title': 'MEAN SPE-A +5V CONVERTER VOLTAGE - ASPEA5CV', 
-                              'savefig': False} 
+                              'samefig': True,
+                              'saveas': '04_CONV_VOLT_OTHER_1.png'} 
 
 plot_avd1cv5v =              {'plot_limits': False, 
-                              'subplot': [3,1,2], 
+                              'subplot': [3,1,1], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
                               'cust_title': 'MEAN VDE-A +5V CONVERTER VOLTAGE - AVD1CV5V', 
+                              'savefig': False}    
+
+plot_avd2cv5v =              {'plot_limits': False, 
+                              'subplot': [3,1,2], 
+                              'plot_mins': False, 
+                              'plot_maxes': False, 
+                              'cust_title': 'MEAN VDE-B +5V CONVERTER VOLTAGE - AVD2CV5V', 
                               'samefig': True, 
-                              'saveas': '06_CONV_VOLT_OTHER_3.png'}    
+                              'saveas': '06_CONV_VOLT_VDE.png'}                                 
 
 plot_awd1cv5v =              {'plot_limits': False, 
                               'subplot': [3,1,1], 
@@ -346,7 +363,8 @@ plot_awd2cv5v =              {'plot_limits': False,
                               'samefig': True, 
                               'savefig': False}   
 
-plot_awd3cv5v =              {'plot_limits': False, 
+plot_awd3cv5v =              {'ylim': [5.28, 5.33],
+                              'plot_limits': False, 
                               'subplot': [3,1,3], 
                               'plot_mins': False, 
                               'plot_maxes': False, 
@@ -436,9 +454,10 @@ plot_dp_css4_npm_sun =       {'plot_limits': False,
                               'cust_unit': 'COUNTS', 
                               'subplot': [4,1,4], 
                               'samefig': True, 
-                              'saveas': '29_RW_TORQUE_CURR_2.png'}      
+                              'saveas': '29_MIN_CSS_COUNTS.png'}      
 
 plot_dp_fss_css_angle_diff = {'plot_limits': False, 
+                              'cust_unit': 'DEG', 
                               'saveas': '30_FSS_CSS_ANGLE_DIFF.png'}
 
 plot_dp_pitch_fss =          {'cust_title': 'FSS PITCH ANGLE', 
