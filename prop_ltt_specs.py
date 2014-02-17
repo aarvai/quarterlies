@@ -260,7 +260,7 @@ plot_pmtank2t = {}
 
 plot_pmtank3t = {}
 
-plot_pmtankp =  {}
+plot_pmtankp =  {'ylim': [100, 400]}
 
 plot_pr1tv01t = {'plot_limits': False, 
                  'yellow': [40, 195], 
