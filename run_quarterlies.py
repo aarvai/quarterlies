@@ -11,8 +11,8 @@ from utilities import mkdir_cd
 ##-------------------------------------------------------------
 # Inputs - Quarter start and stop
 
-start = '2012:214:00:00:00'
-stop = '2013:031:00:00:00'
+start = '2013:213:00:00:00'
+stop = '2014:031:00:00:00'
 
 ##-------------------------------------------------------------
 # Run Quarterlies
@@ -43,6 +43,7 @@ pcad_plots.fss(start, stop)
 mkdir_cd('../../' + prop_dir)
 mkdir_cd('mission')
 ltt.prop_ltts('2002:001:00:00:00', stop)
+prop.htr_dc('PM3THV2T', on_temp=60, off_temp=89) 
 mkdir_cd('zoom')
 ltt.prop_zoom_ltts('2002:001:00:00:00', stop)
 mkdir_cd('../../other')
@@ -50,5 +51,6 @@ prop_plots.mups_tank(stop)
 prop_plots.therm_dropouts(stop)
 chdir('../..')
 pp.close('all')
+pcad_plots.collect_bias_data(stop) #this step adds ~10 min
 
 
