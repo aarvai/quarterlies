@@ -1,6 +1,7 @@
 import numpy as np
 from os import chdir, mkdir, path
 from matplotlib import pyplot as pp
+from Chandra.Time import DateTime
 
 from os import mkdir, chdir
 
@@ -44,17 +45,17 @@ def count_by_month(times):
     #Create an array that spans the timeframe with one date in the middle-ish of every month
     x_start = DateTime(min(DateTime(times).secs)).iso[:7] + '-15 12:00:00.00'
     x_stop = DateTime(max(DateTime(times).secs)).iso[:7] + '-15 12:00:00.00'
-    x_times = arange(DateTime(x_start).secs, DateTime(x_stop).secs, len_mo) 
+    x_times = np.arange(DateTime(x_start).secs, DateTime(x_stop).secs, len_mo) 
     
     #Collect the year and month for each date
     t_month = [DateTime(t).iso[:7] for t in times]
     x_month = [DateTime(x).iso[:7] for x in x_times]
     
     num_months = len(x_times)
-    month_counts = zeros(num_months)
-    for i in arange(num_months):
+    month_counts = np.zeros(num_months)
+    for i in np.arange(num_months):
         match = [t == x_month[i] for t in t_month]
-        month_counts[i] = sum(match)
+        month_counts[i] = np.sum(match)
     month_times = x_times
     return month_times, month_counts
 
@@ -69,17 +70,17 @@ def sum_by_month(times, vals):
     #Create an array that spans the timeframe with one date in the middle-ish of every month
     x_start = DateTime(min(DateTime(times).secs)).iso[:7] + '-15 12:00:00.00'
     x_stop = DateTime(max(DateTime(times).secs)).iso[:7] + '-15 12:00:00.00'
-    x_times = arange(DateTime(x_start).secs, DateTime(x_stop).secs, len_mo) 
+    x_times = np.arange(DateTime(x_start).secs, DateTime(x_stop).secs, len_mo) 
     
     #Collect the year and month for each date
     t_month = [DateTime(t).iso[:7] for t in times]
     x_month = [DateTime(x).iso[:7] for x in x_times]
     
     num_months = len(x_times)
-    month_sums = zeros(num_months)
-    for i in arange(num_months):
-        match = [t == x_month[i] for t in t_month]
-        month_sums[i] = sum(vals[match])
+    month_sums = np.zeros(num_months)
+    for i in np.arange(num_months):
+        match = np.array([t == x_month[i] for t in t_month])
+        month_sums[i] = np.sum(vals[match])
     month_times = x_times
     return month_times, month_sums   
 
@@ -94,17 +95,17 @@ def mean_by_month(times, vals):
     #Create an array that spans the timeframe with one date in the middle-ish of every month
     x_start = DateTime(min(DateTime(times).secs)).iso[:7] + '-15 12:00:00.00'
     x_stop = DateTime(max(DateTime(times).secs)).iso[:7] + '-15 12:00:00.00'
-    x_times = arange(DateTime(x_start).secs, DateTime(x_stop).secs, len_mo) 
+    x_times = np.arange(DateTime(x_start).secs, DateTime(x_stop).secs, len_mo) 
     
     #Collect the year and month for each date
     t_month = [DateTime(t).iso[:7] for t in times]
     x_month = [DateTime(x).iso[:7] for x in x_times]
     
     num_months = len(x_times)
-    month_means = zeros(num_months)
-    for i in arange(num_months):
-        match = [t == x_month[i] for t in t_month]
-        month_means[i] = mean(vals[match])
+    month_means = np.zeros(num_months)
+    for i in np.arange(num_months):
+        match = np.array([t == x_month[i] for t in t_month])
+        month_means[i] = np.mean(vals[match])
     month_times = x_times
     return month_times, month_means   
     
