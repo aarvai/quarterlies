@@ -195,7 +195,15 @@ def cmd_vs_act_torque(start, stop, savefig=True):   #NOT TESTED YET!
         pp.savefig('RW_Act_Minus_Cmd_Torque.png')
         pp.close()
 
-    
+def collect_bias_data(t_stop):
+    msids = ['4rt707t','4rt708t','airu2bt','airu2g1i','airu2g1t','airu2g2i',
+             'airu2g2t','airu2vft','aogbias1','aogbias2','aogbias3',
+             'aokalstr','aomanend','aonstars','aosares1','aorwspd1',
+             'aorwspd2','aorwspd3','aorwspd4','aorwspd5','aorwspd6',
+             'aosymom1','aosymom2','aosymom3','Dist_SatEarth','oobthr62',
+             'tcylaft6']
+    biases=fetch.MSIDset(msids,'2003:201',t_stop,stat='5min') 
+    biases.write_zip('biases.zip')    
     
 ##-------------------------------------------------------------
 # TO ADD LATER:
