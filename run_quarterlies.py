@@ -43,7 +43,7 @@ pcad_plots.fss(start, stop)
 mkdir_cd('../../' + prop_dir)
 mkdir_cd('mission')
 ltt.prop_ltts('2002:001:00:00:00', stop)
-prop.htr_dc('PM3THV2T', on_temp=60, off_temp=89) 
+prop_plots.htr_dc('PM3THV2T', on_temp=60, off_temp=89) #this step adds ~5 min
 mkdir_cd('zoom')
 ltt.prop_zoom_ltts('2002:001:00:00:00', stop)
 mkdir_cd('../../other')

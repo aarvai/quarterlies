@@ -88,7 +88,7 @@ def htr_dc(msid, **kwargs):
     on_temp = kwargs.pop('on_temp', min(temp.vals) + 5)
     off_temp = kwargs.pop('off_temp', max(temp.vals) - 5) 
     
-    dt = diff(temp.vals)
+    dt = np.diff(temp.vals)
     
     local_min = (append_to_array(dt <= 0., pos=0, val=bool(0)) & 
                  append_to_array(dt > 0., pos=-1, val=bool(0)))
@@ -102,7 +102,7 @@ def htr_dc(msid, **kwargs):
     htr_off = local_max & htr_off_range
     
     #remove any incomplete heater cycles at end of timeframe
-    last_off = nonzero(htr_off)[0][-1]
+    last_off = np.nonzero(htr_off)[0][-1]
     htr_on[last_off:] = 0
     
     t_on = temp.times[htr_on]
@@ -119,7 +119,7 @@ def htr_dc(msid, **kwargs):
     len_mo = 365.25/12*24*3600
     firstofmonth = [DateTime(DateTime(date).iso[:7] + '-01 00:00:00.00').secs for date in dates]
     firstofmonth.append(DateTime(DateTime(dates[-1] + len_mo).iso[:7] + '-01 00:00:00.00').secs)
-    month_dur = diff(firstofmonth)
+    month_dur = np.diff(firstofmonth)
     dc = on_time / month_dur
        
     figure(1)
