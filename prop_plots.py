@@ -40,136 +40,66 @@ def mups_tank(stop):
     pp.savefig('TankPressureUpdate.png')
 
 #-------------------------------------------------------------
+# IPS Tank Pressure vs Temperature
+
+def ips_tank(stop):
+    x=fetch.Msidset(['pftank2t', 'pftankip'], '2000:001', stop, stat='5min')
+    x['pftank2t'].remove_intervals(events.safe_suns)
+    x['pftankip'].remove_intervals(events.safe_suns)
+    htr_on = [('2013:012', '2013:262')]
+    x['pftank2t'].remove_intervals(htr_on)
+    x['pftankip'].remove_intervals(htr_on)
+    pp.figure()
+    pp.plot(x['pftank2t'].midvals, x['pftankip'].midvals, 'b*-', mew=0, alpha=.1, label='historical range')
+    now = DateTime().mjd
+    past_yr = [(DateTime(now - 365, format='mjd').date, DateTime(now, format='mjd').date)]
+    x['pftank2t'].select_intervals(past_yr)
+    x['pftankip'].select_intervals(past_yr) 
+    pp.plot(x['pftank2t'].midvals, x['pftankip'].midvals, 'r*-', mew=0, alpha=.1, label='past year')    
+    pp.legend(loc='best')
+    pp.xlim([65, 105])
+    pp.ylim([275, 305])
+    pp.grid()
+    pp.title('IPS Tank Pressure vs Temperature \n (2000:001 onward excluding 2013 period w/ pri htr disabled)')
+    pp.ylabel('PFTANKIP [psi]')
+    pp.xlabel('PFTANK2T [deg F]')
+    pp.tight_layout()
+    pp.savefig('TankPressVsTemp.png')
+    
+#-------------------------------------------------------------
 # Temperatures of Thermistors with Dropouts Plot
 
 def therm_dropouts(stop):
-    vars=['plaev2bt','pm1thv1t','pm2thv1t','pm2thv2t','pr1tv01t']
-    col = ['b','g','r','c','m']
-    ys=np.array([[40,220],[90,180],[80,200],[90,180],[80,180]])
+    vars=['plaev2bt','pm1thv1t','pm1thv2t','pm2thv1t','pm2thv2t','pr1tv01t']
+    col = ['b','g','r','c','m', '#CCCC00']
+    ys=np.array([[40,220],[80,200],[80,200],[80,200],[80,200],[80,180]])
     x = fetch.Msidset(vars,'2004:001', stop, stat='daily')
     pp.figure(figsize=(8,12))
     for i in range(len(vars)):
-        pp.subplot(5,1,i+1)
+        pp.subplot(len(vars),1,i+1)
         plot_cxctime(x[vars[i]].times, x[vars[i]].maxes, col[i])
         pp.title(x[vars[i]].msid.upper() + ' Maximum Daily Temperature')
         pp.ylabel(x[vars[i]].unit)
         pp.ylim(ys[i])
+    pp.tight_layout()
     pp.savefig('DropoutThermistorTemps.png')
 
+#-------------------------------------------------------------
+# FDM-2 Temperatures
 
-##-------------------------------------------------------------
-# Heater Duty Cycle Plots
-
-def htr_dc(msid, **kwargs):
-    """Generate plots related to the heater cycle trending of a given MSID and
-    save them to the current working directory.
-    
-    Input:
-    :var:  MSID or derived parameter name (string)
-    
-    Optional inputs:
-    :tstart:        Start time (default is 2000:001)
-    :tstop:         Stop time (default is None)
-    :on_temp:      A temperature near the bottom of the heater band 
-                   (default is min temp + five)
-    :off_temp:     A tempeature near the top of the heater band
-                   (default is max temp - five)
-    
-    e.g.
-    plot_htr_dc('PM3THV2T', start='2005:001', stop='2014:001', on_temp=50, off_temp=89)   
-    """
-    tstart = kwargs.pop('tstart', '2000:001')
-    tstop = kwargs.pop('tstop', None)
-
-    temp = fetch.Msid(msid, tstart, tstop)
-    
-    temp.plot()
-    
-    on_temp = kwargs.pop('on_temp', min(temp.vals) + 5)
-    off_temp = kwargs.pop('off_temp', max(temp.vals) - 5) 
-    
-    dt = np.diff(temp.vals)
-    
-    local_min = (append_to_array(dt <= 0., pos=0, val=bool(0)) & 
-                 append_to_array(dt > 0., pos=-1, val=bool(0)))
-    local_max = (append_to_array(dt >= 0., pos=0, val=bool(0)) & 
-                 append_to_array(dt < 0., pos=-1, val=bool(0)))
-    
-    htr_on_range = temp.vals < on_temp
-    htr_off_range = temp.vals > off_temp
-    
-    htr_on = local_min & htr_on_range
-    htr_off = local_max & htr_off_range
-    
-    #remove any incomplete heater cycles at end of timeframe
-    last_off = np.nonzero(htr_off)[0][-1]
-    htr_on[last_off:] = 0
-    
-    t_on = temp.times[htr_on]
-    t_off = temp.times[htr_off]
-    
-    match_i = find_first_after(t_on, t_off)
-    
-    dur = t_off[match_i] - t_on
-    
-    #compute duty cycles by month
-    dates, on_freq = count_by_month(t_on)
-    dates, on_time = sum_by_month(t_on, dur)
-    dates, avg_on_time = mean_by_month(t_on, dur)
-    len_mo = 365.25/12*24*3600
-    firstofmonth = [DateTime(DateTime(date).iso[:7] + '-01 00:00:00.00').secs for date in dates]
-    firstofmonth.append(DateTime(DateTime(dates[-1] + len_mo).iso[:7] + '-01 00:00:00.00').secs)
-    month_dur = np.diff(firstofmonth)
-    dc = on_time / month_dur
-       
-    pp.figure(1)
-    plot_cxctime(t_on, dur, 'b.', alpha=.05, mew=0)
-    pp.ylabel('On-Time Durations [sec]')
-    pp.title('MUPS-3 Valve Heater On-Time Durations')
-    pp.savefig(msid+'_htr_ontime.png')    
-    
-    pp.figure(2)
-    plot_cxctime(temp.times, temp.vals, mew=0)
-    plot_cxctime(temp.times, temp.vals, 'b*',mew=0)
-    plot_cxctime(temp.times[htr_on], temp.vals[htr_on], 'c*',mew=0, label='Heater On')
-    plot_cxctime(temp.times[htr_off], temp.vals[htr_off], 'r*',mew=0, label='Heater Off')
-    pp.legend()
-    pp.savefig(msid+'_htr_on_off_times.png')
-    
-    pp.figure(3) 
-    pp.hist(dur, bins=100, normed=True)
-    pp.xlabel('On-Time Durations [sec]')
-    pp.title('MUPS-3 Valve Heater On-Time Durations')
-    pp.savefig(msid+'_htr_ontime_dur.png')    
-    
-    pp.figure(4) 
-    plot_cxctime(dates, dc*100, '*', mew=0)
-    plot_cxctime(dates, dc*100)
-    pp.title('MUPS-3 Valve Heater Duty Cycle')
-    pp.ylabel('Heater Duty Cycle by Month [%] \n (Total On-time / Total Time)')
-    pp.savefig(msid+'_htr_dc.png')
-    
-    pp.figure(5) 
-    plot_cxctime(dates, on_freq, '*', mew=0)
-    plot_cxctime(dates, on_freq)
-    pp.title('MUPS-3 Valve Heater Cycling Frequency')
-    pp.ylabel('Heater Cycles per Month')
-    pp.savefig(msid+'_htr_cycle_freq.png')
-    
-    pp.figure(6)
-    plot_cxctime(dates, on_time/3600, '*', mew=0)
-    plot_cxctime(dates, on_time/3600)
-    pp.title('MUPS-3 Valve Heater On-Time')
-    pp.ylabel('Heater On-Time by Month [hrs]')
-    pp.savefig(msid+'_sum_htr_ontime.png')
-    
-    pp.figure(7) 
-    plot_cxctime(dates, avg_on_time/3600, '*', mew=0)
-    plot_cxctime(dates, avg_on_time/3600)
-    pp.title('MUPS-3 Valve Heater Average On-Time')
-    pp.ylabel('Mean Heater On-Time by Month [hrs]')
-    pp.savefig(msid+'_mean_htr_ontime.png')
-
+def fdm2(stop):
+    vars=['pfdm201t', 'pfdm202t']
+    x = fetch.Msidset(vars, '2009:001')
+    pp.figure()
+    pp.subplot(2,1,1)
+    x['pfdm201t'].plot()
+    pp.ylabel('Deg F')
+    pp.title('PFDM201T:  FDM-2 Temp #1')
+    pp.subplot(2,1,2)
+    x['pfdm202t'].plot()
+    pp.ylabel('Deg F')
+    pp.title('PFDM202T:  FDM-2 Temp #2')    
+    pp.savefig('FDM2.png')
 
 
 
