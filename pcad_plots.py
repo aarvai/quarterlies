@@ -155,7 +155,7 @@ def drag_torque(start, stop, dt=328, verbose=False, plot_months=True, savefig=Tr
         ax2 = smaller_axes(ax1)
         # Place datapoint on the 15th of the month (14 days = 1209600 sec)
         plot_cxctime(np.array(Time.DateTime(dates[:-1]).secs) + 1209600, 
-                     slopes[:,rw - 1], 'k-d', ms=3)
+                     slopes[:,rw - 1], 'k.', ms=3)
         pp.ylim([.4e-6, 2e-6])
         ax2.yaxis.set_ticks([0.4e-6, .8e-6, 1.2e-6, 1.6e-6, 2e-6])
         pp.setp(ax2.get_xticklabels(), 'rotation', 0)
