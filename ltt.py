@@ -23,7 +23,7 @@ def plot_ltt(var, **kwargs):
     :savefig:      Save and close figure (default is True)
     :saveas:       Name to save figure as (default is <MSID>.png)
     :samefig:      Use current figure (default is False)
-    :start:        Start time (default is 2000:001)
+    :start:        Start time (default is after OAC on 1999:250)
     :stop:         Stop time (default is None)
     :stat:         Statistic type ('5min' or 'daily', default is 'daily')
     :filter:       User-defined Start and End times to filter out due to bad 
@@ -74,7 +74,7 @@ def plot_ltt(var, **kwargs):
              plot_stds=False, min_mark='rd', legend=True)
     """
     var = var.lower()
-    start = kwargs.pop('start', '2000:001')
+    start = kwargs.pop('start', '1999:250')
     stop = kwargs.pop('stop', None)
     stat = kwargs.pop('stat', 'daily')
     
@@ -122,19 +122,24 @@ def plot_ltt(var, **kwargs):
     lim = kwargs.pop('limit_lines', True)
     if kwargs.pop('plot_maxes', True):
         plot_cxctime(data.times, data.maxes * mult, 
-                     kwargs.pop('max_mark', 'g:'), label=(stat + ' maxes'))
+                     kwargs.pop('max_mark', 'r.'), markersize=3, label=(stat + ' maxes'))
     if kwargs.pop('plot_mins', True):
         plot_cxctime(data.times, data.mins * mult, 
-                     kwargs.pop('min_mark', 'b:'), label=(stat + ' mins'))
+                     kwargs.pop('min_mark', 'r.'), markersize=3, label=(stat + ' mins'))
     if kwargs.pop('plot_means', True):
         plot_cxctime(data.times, data.means * mult, 
-                     kwargs.pop('mean_mark', 'k+-'), label=(stat + ' means'))
-   
+                     kwargs.pop('mean_mark', 'r.'), markersize=3, label=(stat + ' means'))
+  
+    # Adjust x-axis
+    x_ax = Time.DateTime(pp.xlim(), format='plotdate').mjd
+    dur = np.diff(x_ax)
+    x_ax_new = [x_ax[0], x_ax[1] + .1*dur[0]]
+    pp.xlim(Time.DateTime(x_ax_new, format='mjd').plotdate)
+
     # Plot limits
     if kwargs.pop('plot_limits', True):
         # Check if single limit set exists in TDB
-        if (hasattr(data, 'tdb') and np.size(data.tdb.Tlmt) == 1 and 
-            data.tdb.Tlmt is not None):
+        if (hasattr(data, 'tdb') and (data.tdb.Tlmt is not None)):
             pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[4] * mult, 
                                          data.tdb.Tlmt[4] * mult]), 'r')
             pp.plot(pp.xlim(), np.array([data.tdb.Tlmt[2] * mult, 
@@ -146,7 +151,7 @@ def plot_ltt(var, **kwargs):
             if ~kwargs.has_key('ylim'):
                 pp.ylim(np.array([data.tdb.Tlmt[4] - 10.0, 
                                   data.tdb.Tlmt[5] + 10.0]))
-    
+        
     # Add title
     if kwargs.has_key('cust_title'):
         title = kwargs.pop('cust_title')
@@ -190,9 +195,11 @@ def plot_ltt(var, **kwargs):
         ax3.yaxis.set_major_locator(ticker.MaxNLocator(2))
         y_ticks = pp.yticks()
         y_lim = pp.ylim()
+        pp.xlim(Time.DateTime(x_ax_new, format='mjd').plotdate) 
         # prevent overlap between y-axis and stdev y-axis
         if (y_lim[1] - y_ticks[0][-1]) / y_lim[-1] < .70:
             pp.yticks(y_ticks[0][:-1])
+        
        
     # Ensure xticks aren't rotated
     ax = pp.gca()
