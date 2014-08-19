@@ -1,22 +1,10 @@
-plot_pcm01t =   {'ylim': [50,170], 
-                 'plot_limits': False, 
-                 'yellow': [85,185], 
-                 'red': [80,200]}
+plot_pcm01t =   {'ylim': [70,210]}
 
-plot_pcm02t =   {'ylim': [50,170], 
-                 'plot_limits': False, 
-                 'yellow': [85,185], 
-                 'red': [80,200]}
+plot_pcm02t =   {'ylim': [70,210]}
 
-plot_pcm03t =   {'ylim': [50,170], 
-                 'plot_limits': False, 
-                 'yellow': [65,185], 
-                 'red': [60,200]}
+plot_pcm03t =   {'ylim': [70,210]}
 
-plot_pcm04t =   {'ylim': [50,170], 
-                 'plot_limits': False, 
-                 'yellow': [65,185], 
-                 'red': [60,200]}
+plot_pcm04t =   {'ylim': [70,210]}
 
 plot_pfdm101t = {}
 
@@ -26,41 +14,27 @@ plot_pfdm201t = {}
 
 plot_pfdm202t = {}
 
-plot_pffp01t =  {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,200],
-                 'red': [40,240]}
+plot_pffp01t =  {'ylim': [30,250]}
 
-plot_pftank1t = {'ylim': [30,130], 
-                 'plot_limits': False, 
-                 'yellow': [47,100], 
-                 'red': [40,120]}
+plot_pftank1t = {'ylim': [30,130]}
 
-plot_pftank2t = {'ylim': [30,130], 
-                 'plot_limits': False, 
-                 'yellow': [47,100], 
-                 'red': [40,120]}
+plot_pftank2t = {'ylim': [30,130]}
 
-plot_pftankip = {'ylim': [230,310],
+plot_pftankip = {'ylim': [230,340],
                  'plot_limits': False, 
-                 'yellow': [270, 296], 
-                 'red': [240, 300]}
+                 'yellow': [270, 325], 
+                 'red': [240, 330]}
 
-plot_pftankop = {'ylim': [230,310],
+plot_pftankop = {'ylim': [230,340],
                  'plot_limits': False, 
-                 'yellow': [220, 296], 
-                 'red': [240, 300]}
+                 'yellow': [220, 325], 
+                 'red': [240, 330]}
 
 plot_phetankp = {}
 
-plot_phetankt = {'ylim': [-20,150], 
-                 'plot_limits': False, 
-                 'yellow': [0,130], 
-                 'red': [-10,140]}
+plot_phetankt = {'ylim': [-20,150]}
 
-plot_phofp1t =  {'plot_limits': False, 
-                 'yellow': [35, 110], 
-                 'red': [30, 120]}
+plot_phofp1t =  {}
 
 plot_plaed1at = {'ylim': [-90,300]}
 
@@ -134,84 +108,39 @@ plot_plaed4ht = {'ylim': [-90,100]}
 
 plot_plaed4it = {'ylim': [-90,100]}
 
-plot_plaev1at = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,225], 
-                 'red': [40,240]}
+plot_plaev1at = {'ylim': [30,250]}
 
-plot_plaev1bt = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,225], 
-                 'red': [40,240]}
+plot_plaev1bt = {'ylim': [30,250]}
 
-plot_plaev2at = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,225], 
-                 'red': [40,240]}
+plot_plaev2at = {'ylim': [30,250]}
 
-plot_plaev2bt = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,225], 
-                 'red': [40,240]}
+plot_plaev2bt = {'ylim': [30,250]}
 
-plot_plaev3at = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,225], 
-                 'red': [40,240]}
+plot_plaev3at = {'ylim': [30,250]}
 
-plot_plaev3bt = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,225], 
-                 'red': [40,240]}
+plot_plaev3bt = {'ylim': [30,250]}
 
-plot_plaev4at = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [-200,225], 
-                 'red': [-300,240]}
+plot_plaev4at = {'ylim': [30,250]}
 
-plot_plaev4bt = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,225], 
-                 'red': [40,240]}
+plot_plaev4bt = {'ylim': [30,250]}
 
 plot_pline01t = {}
 
-plot_pline02t = {'ylim': [30,190], 
-                 'plot_limits': False, 
-                 'yellow': [47,200], 
-                 'red': [40,240]}
+plot_pline02t = {'ylim': [30,250]}
 
-plot_pline03t = {'ylim': [29.5,190], 
-                 'plot_limits': False, 
-                 'yellow': [42.5,200], 
-                 'red': [39.5,240]}
+plot_pline03t = {'ylim': [29.5,250]}
 
-plot_pline04t = {'ylim': [29.5,190], 
-                 'plot_limits': False, 
-                 'yellow': [42.5,170], 
-                 'red': [39.5,180]}
+plot_pline04t = {'ylim': [29.5,190]}
 
-plot_pline05t = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,200], 
-                 'red': [40,240]}
+plot_pline05t = {'ylim': [30,250]}
 
-plot_pline06t = {'ylim': [30,190], 
-                 'plot_limits': False, 
-                 'yellow': [47,150], 
-                 'red': [40,180]}
+plot_pline06t = {'ylim': [30,190]}
 
-plot_pline07t = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,200], 
-                 'red': [40,240]}
+plot_pline07t = {'ylim': [30,250]}
 
 plot_pline08t = {}
 
-plot_pline09t = {'ylim': [30, 190], 
-                 'plot_limits': False, 
-                 'yellow': [47,150], 
-                 'red': [40,180]}
+plot_pline09t = {'ylim': [30, 190]}
 
 plot_pline10t = {}
 
@@ -225,19 +154,13 @@ plot_pline14t = {}
 
 plot_pline15t = {}
 
-plot_pline16t = {'ylim': [30, 190], 
-                 'plot_limits': False, 
-                 'yellow': [47,150], 
-                 'red': [40,180]}
+plot_pline16t = {'ylim': [30, 190]}
 
 plot_pm1thv1t = {}
 
 plot_pm1thv2t = {}
 
-plot_pm2thv1t = {'ylim': [30,250], 
-                 'plot_limits': False, 
-                 'yellow': [47,195], 
-                 'red': [40,240]}
+plot_pm2thv1t = {'ylim': [30,250]}
 
 plot_pm2thv2t = {}
 
@@ -249,34 +172,32 @@ plot_pm4thv1t = {}
 
 plot_pm4thv2t = {}
 
-plot_pmfp01t =  {'ylim': [30,150], 
-                 'plot_limits': False, 
-                 'yellow': [47,130], 
-                 'red': [40,140]}
+plot_pmfp01t =  {'ylim': [30,150]}
 
-plot_pmtank1t = {}
+plot_pmtank1t = {'plot_limits': False,
+                 'ylim': [30,170],
+                 'yellow': [47,140], 
+                 'red': [40,160]}
 
-plot_pmtank2t = {}
+plot_pmtank2t = {'plot_limits': False,
+                 'ylim': [30,170],
+                 'yellow': [47,140], 
+                 'red': [40,160]}
 
-plot_pmtank3t = {}
+plot_pmtank3t = {'plot_limits': False,
+                 'ylim': [30,170],
+                 'yellow': [47,140], 
+                 'red': [40,160]}
 
 plot_pmtankp =  {'ylim': [100, 400]}
 
-plot_pr1tv01t = {'plot_limits': False, 
-                 'yellow': [40, 195], 
-                 'red': [37, 240]}
+plot_pr1tv01t = {}
 
-plot_pr1tv02t = {'plot_limits': False, 
-                 'yellow': [40, 195], 
-                 'red': [37, 240]}
+plot_pr1tv02t = {}
 
-plot_pr2tv01t = {'plot_limits': False, 
-                 'yellow': [40, 195], 
-                 'red': [37, 240]}
+plot_pr2tv01t = {}
 
-plot_pr2tv02t = {'plot_limits': False, 
-                 'yellow': [40, 195], 
-                 'red': [37, 240]}
+plot_pr2tv02t = {}
 
 plot_pr3tv01t = {}
 
