@@ -2,9 +2,9 @@ plot_pcm01t =   {'ylim': [70,210]}
 
 plot_pcm02t =   {'ylim': [70,210]}
 
-plot_pcm03t =   {'ylim': [70,210]}
+plot_pcm03t =   {'ylim': [50,210]}
 
-plot_pcm04t =   {'ylim': [70,210]}
+plot_pcm04t =   {'ylim': [50,210]}
 
 plot_pfdm101t = {}
 
@@ -25,10 +25,10 @@ plot_pftankip = {'ylim': [230,340],
                  'yellow': [270, 325], 
                  'red': [240, 330]}
 
-plot_pftankop = {'ylim': [230,340],
+plot_pftankop = {'ylim': [190,340],
                  'plot_limits': False, 
                  'yellow': [220, 325], 
-                 'red': [240, 330]}
+                 'red': [200, 330]}
 
 plot_phetankp = {}
 
