@@ -122,13 +122,13 @@ def plot_ltt(var, **kwargs):
     lim = kwargs.pop('limit_lines', True)
     if kwargs.pop('plot_maxes', True):
         plot_cxctime(data.times, data.maxes * mult, 
-                     kwargs.pop('max_mark', 'r.'), markersize=3, label=(stat + ' maxes'))
+                     kwargs.pop('max_mark', 'g.'), markersize=3, label=(stat + ' maxes'))
     if kwargs.pop('plot_mins', True):
         plot_cxctime(data.times, data.mins * mult, 
-                     kwargs.pop('min_mark', 'r.'), markersize=3, label=(stat + ' mins'))
+                     kwargs.pop('min_mark', 'b.'), markersize=3, label=(stat + ' mins'))
     if kwargs.pop('plot_means', True):
         plot_cxctime(data.times, data.means * mult, 
-                     kwargs.pop('mean_mark', 'r.'), markersize=3, label=(stat + ' means'))
+                     kwargs.pop('mean_mark', 'k.'), markersize=3, label=(stat + ' means'))
   
     # Adjust x-axis
     x_ax = Time.DateTime(pp.xlim(), format='plotdate').mjd
