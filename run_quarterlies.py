@@ -19,7 +19,7 @@ stop = '2014:212:00:00:00'
 
 # Define directory names
 t = Time.DateTime()
-new_dir = t.date[:4] + '_' + t.date[5:8] + '_RUN'
+new_dir = 'Q_' + start[:3] + start[5:8] + '_' + stop[:3] + stop[5:8]
 
 # Make directories and create plots
 pp.close('all')
@@ -46,7 +46,7 @@ prop_plots.mups_tank(stop)
 prop_plots.ips_tank(stop)
 prop_plots.therm_dropouts(stop)
 prop_plots.fdm2(stop)
-chdir('../..')
+chdir('..')
 pp.close('all')
 
 
